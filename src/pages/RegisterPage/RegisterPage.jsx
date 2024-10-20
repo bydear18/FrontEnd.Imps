@@ -1,11 +1,11 @@
-import Navbar from "../../components/NavBar/Navbar";
+import LoginNavbar from '../../components/NavBar/LoginNavbar';
 import RegisterBody from "./RegisterBody/RegisterBody";
 
 const RegisterPage = () => {
 
     return (
       <div>
-        <Navbar/>
+        <LoginNavbar/>
         <RegisterBody/>
       </div>
       

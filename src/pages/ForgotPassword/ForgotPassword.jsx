@@ -1,4 +1,5 @@
 
+import LoginNavbar from '../../components/NavBar/LoginNavbar';
 
 import Navbar from '../../components/NavBar/Navbar';
 import ForgotPassContent from './ForgotPasswordContent/ForgotPassContent';
@@ -7,7 +8,7 @@ const ForgotPassword = () => {
 
   return (
     <div>
-      <Navbar/>
+      <LoginNavbar/>
       <ForgotPassContent/>
     </div>
     
