@@ -23,7 +23,7 @@ const Pending = () => {
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     });
-
+    const [commentDisabled, setCommentDisabled] = useState('hide');
 
     const [commentOptions, setCommentOptions] = useState([
         { label: 'Insufficient Information', value: 'Insufficient Information' },
@@ -321,7 +321,15 @@ const Pending = () => {
                     .then((response) => response.json())
                     .then((data) => {
                         setStatus(data['status']);
-
+                        if(data['status'] === 'Rejected'){
+                            setRejected('show');
+                            setCommentDisabled('hide');
+                        }else if (data['status'] === 'Completed'){
+                            setRejected('hide');
+                        }else{
+                            setRejected('show');
+                            setCommentDisabled('show');
+                        }
                         if (data['status'] === 'Rejected') {
                             setStatus('Rejected');
                             setStatusClass('capsuleRejected');
