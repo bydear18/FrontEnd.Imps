@@ -110,7 +110,7 @@ const Reports = () => {
         },
         };
       
-      fetch("http://localhost:8080/records/getModules?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/records/getModules?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setModules(data); 
       })
       .catch(error =>
@@ -119,7 +119,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/requests/getModuleCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/requests/getModuleCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setModuleCopies(data); 
       })
       .catch(error =>
@@ -128,7 +128,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/records/getOfficeForms?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/records/getOfficeForms?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setOfficeForms(data);})
       .catch(error =>
           {
@@ -136,7 +136,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/requests/getOfficeFormCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/requests/getOfficeFormCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setOfficeCopies(data);;
       })
       .catch(error =>
@@ -145,7 +145,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/records/getExams?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/records/getExams?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setExams(data); })
       .catch(error =>
           {
@@ -153,7 +153,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/requests/getExamCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/requests/getExamCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setExamCopies(data); 
       })
       .catch(error =>
@@ -162,7 +162,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/records/getManuals?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/records/getManuals?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setManuals(data);})
       .catch(error =>
           {
@@ -170,7 +170,7 @@ const Reports = () => {
           }
       );
 
-      fetch("http://localhost:8080/requests/getManualCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
+      fetch("https://backimps-production.up.railway.app/requests/getManualCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
       ).then((data) => { setManualCopies(data);
       })
       .catch(error =>
@@ -201,7 +201,7 @@ const Reports = () => {
   }, [dates, modules, officeForms, manuals, exams, moduleCopies, officeCopies, examCopies, manualCopies]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/services/statistics") 
+    fetch("https://backimps-production.up.railway.app/services/statistics") 
       .then((response) => response.json())
       .then((data) => {
         setStatistics({

@@ -31,7 +31,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:8080/records/requestCounts")
+    fetch("https://backimps-production.up.railway.app/records/requestCounts")
       .then((response) => response.json())
       .then((data) => {
         setStatistics((prevState) => ({

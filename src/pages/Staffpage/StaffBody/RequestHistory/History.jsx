@@ -114,7 +114,7 @@ const History = ({reqHistory}) => {
               'Content-Type': 'application/json',
             },
             };
-            fetch("http://localhost:8080/records/completedStatus?requestID=" + requestID + "&role=" + role + "&status=Completed&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
+            fetch("https://backimps-production.up.railway.app/records/completedStatus?requestID=" + requestID + "&role=" + role + "&status=Completed&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
             ).then((data) => {
                 showInfoPop(`Request Completed!`, true);
                 window.location.reload();})
@@ -149,7 +149,7 @@ const History = ({reqHistory}) => {
               'Content-Type': 'application/json',
             },
             };
-            fetch("http ://localhost:8080/records/rejectedStatus?requestID=" + requestID + "&role=" + role + "&status=Rejected&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
+            fetch("https://backimps-production.up.railway.app/records/rejectedStatus?requestID=" + requestID + "&role=" + role + "&status=Rejected&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
             ).then((data) => {window.location.reload();})
             .catch(error =>
                 {

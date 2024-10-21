@@ -112,7 +112,7 @@ const Pending = () => {
             },
         };
         fetch(
-            "http://localhost:8080/records/acceptedStatus?requestID=" + requestID + 
+            "https://backimps-production.up.railway.app/records/acceptedStatus?requestID=" + requestID + 
             "&status=In Progress&email=" + email + 
             "&userID=" + userID + 
             "&date=" + currentDate + 
@@ -167,10 +167,10 @@ const Pending = () => {
                 mode: 'cors',
                 body: commentData
             };
-            fetch("http://localhost:8080/comments/newComment", requestOptionsComment)
+            fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
             .then((response) => response.json())
             .then((data) => {
-                fetch("http://localhost:8080/records/rejectedStatus?requestID=" + requestID + "&status=Rejected&email=" + email + "&userID=" + userID + "&date=" + currentDate + "&role=" + role, requestOptions)
+                fetch("https://backimps-production.up.railway.app/records/rejectedStatus?requestID=" + requestID + "&status=Rejected&email=" + email + "&userID=" + userID + "&date=" + currentDate + "&role=" + role, requestOptions)
                     .then((response) => response.json())
                     .then((data) => {
                         setInfoMessage('Request rejected successfully!');  
@@ -261,14 +261,27 @@ const Pending = () => {
                     .then((response) => response.json())
                     .then((data) => {
                         setStatus(data['status']);
+                        // if(data['status'] === 'Rejected'){
+                        //     setRejected('show');
+                        //     setCommentDisabled('hide');
+                        // }else if (data['status'] === 'Completed'){
+                        //     setRejected('hide');
+                        // }else{
+                        //     setRejected('show');
+                        //     setCommentDisabled('show');
+                        // }
 
                         if (data['status'] === 'Rejected') {
+                            setStatus('Rejected');
                             setStatusClass('capsuleRejected');
                         } else if (data['status'] === 'Pending') {
+                            setStatus('Waiting for Approval');
                             setStatusClass('capsulePending');
                         } else if (data['status'] === 'In Progress') {
+                            setStatus('Approved for Printing');
                             setStatusClass('capsuleProgress');
                         } else if (data['status'] === 'Completed') {
+                            setStatus('Ready to Claim');
                             setStatusClass('capsuleCompleted');
                         }
                         fetch("http://localhost:8080/comments/id?id=" + event.data.requestID, requestOptions)
@@ -294,18 +307,24 @@ const Pending = () => {
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'info';
-
-            case 'New':
-                return 'info';
-
-            case 'Pending':
                 return 'warning';
 
+            case 'Rejected':
+                return 'danger';
+
+            case 'Approved for Printing':
+                return 'info';
+
+            case 'Ready to Claim':
+                return 'success';
+
+            case 'Claimed':
+                return 'success';
             case '':
                 return null;
         }
     };
+
 
     const closeComment = () => {
         setCommentDate('');
@@ -427,7 +446,11 @@ const Pending = () => {
                 </div>
                 <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
                 <textarea id='instruction' disabled='true' value={content}></textarea>
-
+                <div id='columnizer'>
+                    <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
+                    <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
+                    <button id='approved' className='pendButtons' onClick={handleAccept}>Accept</button>
+                </div>
             </div>
         </div>
     );

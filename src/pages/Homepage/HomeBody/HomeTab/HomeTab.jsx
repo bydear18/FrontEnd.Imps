@@ -47,7 +47,7 @@ const Hometab = () => {
                 upd: tab5.replace(/\n/g, '\n'),
             });
     
-            fetch(`http://localhost:8080/services/createHome?${params.toString()}`, requestOptions)
+            fetch(`https://backimps-production.up.railway.app/services/createHome?${params.toString()}`, requestOptions)
                 .then((response) => response.json())
                 .then((data) => {
                     setEditing(false);
@@ -70,7 +70,7 @@ const Hometab = () => {
         };
     
         // Check if the user is an admin
-        fetch(`http://localhost:8080/services/checkAdmin?email=${localStorage.getItem("email")}`, requestOptions)
+        fetch(`https://backimps-production.up.railway.app/services/checkAdmin?email=${localStorage.getItem("email")}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setAdminEdit(data ? 'show' : 'hide');
@@ -81,11 +81,11 @@ const Hometab = () => {
     
         // Fetch home data if not editing
         if (!editing) {
-            fetch("http://localhost:8080/services/getHomeNumber", requestOptions)
+            fetch("https://backimps-production.up.railway.app/services/getHomeNumber", requestOptions)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data >= 1) {
-                        fetch("http://localhost:8080/services/getHome", requestOptions)
+                        fetch("https://backimps-production.up.railway.app/services/getHome", requestOptions)
                             .then((response) => response.json())
                             .then((data) => {
                                 setTab1(data['announcements'].replace(/\\n/g, '\n')); // Ensure newlines are preserved
