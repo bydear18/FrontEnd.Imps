@@ -422,49 +422,70 @@ const Pending = () => {
         </div>
         <div id="overlay" className = {show} onClick={closeModal}></div>
             <div id="requestBox" className ={show}>
-                <div id='boxDeets'>
+            <div id='boxDeets'>
 
-                <div id='firstLine'>
-                    <h1 id='requestID'>{requestID}</h1>
-                    <div className={statusClass}>{status}</div>
-                    <p id='typeOfFile'>• {fileType}</p>
-                    <p className='dates'>Request Date: <p id='dateRequest'>{requestDate}</p></p>
-                    <p className='dates'>Use Date: <p id='dateUse'>{useDate}</p></p>
-                </div>
-
-                <p id='requester'>Request from:<p id='userID'>{userID}</p></p>
-
-                <div id='fileDeets'>FILE DETAILS</div>
-
-                <div id='secondLine'>
-                    <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName}/>
-                </div>
-
-                <textarea id='descriptionOfFile' disabled='true' value={desc}>{desc}</textarea>
-
-                <div id='thirdLine'>
-                    <div id='hatagExam'>Give exam personally: </div>
-                    <input id='examBox' type='checkbox' value={giveExam} disabled='true'/>
-                </div>
-
-                <div id='fileDeets'>PRINT SPECS</div>
-
-                <div id='fourthLine'>
-                    <p id='coloredBa'>Colored:<input id='boxColor' type='checkbox' value={colored} disabled='true'/> 
-                    <div id='numberCopies'># of Copies: <p className='specText'>{noOfCopies}</p>
-                    </div> <div id='numberCopies'>Paper Size: <p className='specText'>{paperSize}</p>
+                    <div id='firstLine'>
+                        <h1 id='requestID'>{requestID}</h1>
+                        <div className={statusClass}>{status}</div>
+                        <p id='typeOfFile'>• {fileType}</p>
+                        <p className='dates'>Date Requested: <p id='dateRequest'>{requestDate}</p></p>
+                        <p className='dates'>Date Needed: <p id='dateUse'>{useDate}</p></p>
                     </div>
-                    </p> 
-                    <p id='whatBind'>Bind: <p className='specText'>{bindType}</p> <div id='numberCopies'>Stapled? <input id='boxColor' type='checkbox' value={toStaple} disabled='true'/>
-                    </div> </p>
-                </div>
 
-                <div id='contactDeets'>CONTACT INFORMATION</div>
+                    <p id='requester'>Request from:<p id='schoolId'>{schoolId}</p></p>
+
+                    <div id='fileDeets'>FILE DETAILS</div>
+
+                    <div id='secondLine'>
+                        <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName} />
+                    </div>
+
+                    <textarea id='descriptionOfFile' disabled='true' value={desc}>{desc}</textarea>
+
+                    <div id='thirdLine'>
+                        <div id='hatagExam'>Give exam personally: </div>
+                        <input id='examBox' type='checkbox' checked={giveExam} disabled='true' />
+                    </div>
+                    <br></br>
+                    <div id='fileDeets' style={{marginBottom:'.5vw'}}>PRINT SPECS</div>
+
+                    <div id='fourthLine'>
+                        <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
+                            </div>
+                        </p>
+                    </div>
+                    <div id='fourthLine'>
+                        <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
+                            <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
+                        </p>
+                    <br></br>
+                    </div>
+                    <div id='contactDeets' style={{marginBottom:'.5vw'}}>REQUESTER'S INFORMATION</div>
                     <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
-                    <div className='infoLine'>Contact #: <div className='contactItem'>{contactNumber}</div></div>
-                    <div className='infoLine'>Department: <div className='contactItem'>{department}</div></div>
-                </div>
+                    <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
+
+                    <div id="overlay" className={commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className={commentShow}>
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
+                            <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
+                            {selectedComment === 'Other' && (
+                            <div>
+                                <textarea 
+                                    className = 'showOther'
+                                    placeholder="Please specify..." 
+                                    value={otherComment} 
+                                    onChange={(e) => setOtherComment(e.target.value)} 
+                                />
+                            </div>
+                        )}
+                        </div>
+                    </div>
+
+                    </div>
                         
                         <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a>
 
