@@ -466,6 +466,7 @@ const Pending = () => {
                         <Column field="content" header="Content"></Column>
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
+                
                 <div id='columnizer'>
                     <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
                     <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
