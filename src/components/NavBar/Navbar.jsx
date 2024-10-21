@@ -45,10 +45,6 @@ const Navbar = () => {
     }
 
 
-    if(role === 'employee'){
-        role = setAccType(localStorage.getItem("accType"));
-    }
-
     // Fetch notifications and admin check
     useEffect(() => {
         const userID = localStorage.getItem("userID");
@@ -60,6 +56,11 @@ const Navbar = () => {
                 .then(response => response.json())
                 .then(() => {
                     setNotifShow('show');
+                    
+                    if(role === 'employee'){
+                        role = setAccType(localStorage.getItem("accType"));
+                    }
+
                     return fetch(`https://backimps-production.up.railway.app/notifications/id?id=${userID}`, { method: 'GET', mode: 'cors', headers: { 'Content-Type': 'application/json' } });
                 })
                 .then(response => response.json())
