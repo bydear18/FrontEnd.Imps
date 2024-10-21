@@ -331,33 +331,24 @@ const History = ({reqHistory}) => {
             headers: {
               'Content-Type': 'application/json',
           },
-        };
-    
-        fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                const statusMap = {
-                    'Rejected': 'Rejected',
-                    'Pending': 'Waiting for Approval',
-                    'In Progress': 'Approved for Printing',
-                    'Completed': 'Ready to Claim',
-                };
-    
-                const updatedData = data
-                    .map(item => ({
-                        ...item,
-                        status: statusMap[item.status] || item.status, 
-                    }))
-                    .filter(record => record.status !== 'Waiting for Approval'); 
-    
-                // Update state only once
-                setValues(updatedData);
-            })
-            .catch(error => {
+          };
+
+        fetch("http://localhost:8080/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
+        ).then((data) => {
+            fetch("http://localhost:8080/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
+            ).then((data) => { setValues(data);})
+            .catch(error =>
+            {
                 console.log(error);
-            });
-    }, []);
-    
+            }
+            );
+        })
+        .catch(error =>
+            {
+                console.log(error);
+            }
+        );
+    });
 
     return(
         <div>

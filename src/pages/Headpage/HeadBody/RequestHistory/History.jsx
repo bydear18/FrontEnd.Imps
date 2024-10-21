@@ -430,7 +430,7 @@ const Pending = () => {
                 console.log(error);
             });
     }, []);
-    
+
     return (
         <div>
             <div id="pendingTable">
