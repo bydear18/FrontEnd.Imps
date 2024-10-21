@@ -350,7 +350,7 @@ const Pending = () => {
             },
         };
 
-        fetch("http://localhost:8080/records/pending", requestOptions)
+        fetch("https://backimps-production.up.railway.app/records/pending", requestOptions)
             .then((response) => response.json())
             .then((data) => { setValues(data); })
             .catch((error) => {
