@@ -82,13 +82,14 @@ const History = ({reqHistory}) => {
       };
     
       const downloadFile = () => {
+        // Create a temporary anchor element
         const link = document.createElement('a');
         link.href = downloadURL;
-        link.download = ''; // Optional: Specify a filename if desired
+        link.download = fileName; // Optional: Specify a filename
 
         // Append link to the body
         document.body.appendChild(link);
-        // Trigger the download
+        // Programmatically trigger a click on the link
         link.click();
         // Remove the link from the document
         document.body.removeChild(link);
