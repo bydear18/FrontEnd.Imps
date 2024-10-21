@@ -330,30 +330,33 @@ const History = ({reqHistory}) => {
             method: 'GET',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
         };
     
-        // Get the current user's email from localStorage
-        const userEmail = localStorage.getItem("email");
-    
-        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions)
+        const currentUserID = localStorage.getItem("userID"); // Get the userID from localStorage
+        
+        fetch("http://localhost:8080/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                // Fetch records using userID
-                fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // Filter records where the email matches the one from localStorage
-                        const filteredData = data.filter(record => record.requesterEmail === userEmail);
-                        setValues(filteredData); // Set the filtered data to the table
-                        console.log(values);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                const statusMap = {
+                    'Pending': 'Waiting for Approval',
+                    'In Progress': 'Approved for Printing',
+                    'Completed': 'Ready to Claim',
+                };
+    
+                // Map and filter the data by userID
+                const updatedData = data
+                    .filter(item => item.userID === currentUserID) // Filter records by userID
+                    .map(item => ({
+                        ...item,
+                        status: statusMap[item.status] || item.status, 
+                    }));
+    
+                setValues(updatedData); // Set the filtered and updated data
+                console.log(updatedData);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
             });
     }, []);
