@@ -81,9 +81,9 @@ const History = ({reqHistory}) => {
 
       };
     
-      const downloadFile = (url) => {
+      const downloadFile = () => {
         const link = document.createElement('a');
-        link.href = url;
+        link.href = downloadURL;
         link.download = ''; 
     
         document.body.appendChild(link);
@@ -91,7 +91,6 @@ const History = ({reqHistory}) => {
         document.body.removeChild(link);
     };
 
-    const fileUrl = downloadURL; 
 
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
