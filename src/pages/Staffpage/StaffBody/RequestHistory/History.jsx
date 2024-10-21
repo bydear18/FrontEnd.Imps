@@ -81,19 +81,36 @@ const History = ({reqHistory}) => {
 
       };
     
-      const downloadFile = () => {
-        // Create a temporary anchor element
-        const link = document.createElement('a');
-        link.href = downloadURL;
-        link.download = fileName; // Optional: Specify a filename
+      const downloadFile = async () => {
+        try {
+            // Fetch the file data
+            const response = await fetch(downloadURL);
+            if (!response.ok) throw new Error('Network response was not ok');
 
-        // Append link to the body
-        document.body.appendChild(link);
-        // Programmatically trigger a click on the link
-        link.click();
-        // Remove the link from the document
-        document.body.removeChild(link);
+            // Create a blob from the response
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName; // Specify a filename for the download
+
+            // Append the link to the body
+            document.body.appendChild(link);
+            // Programmatically trigger a click on the link
+            link.click();
+            // Remove the link from the document
+            document.body.removeChild(link);
+
+            // Clean up the object URL
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download error:', error);
+        }
     };
+
+
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
