@@ -361,21 +361,21 @@ const Pending = () => {
     return (
         <div>
             <div id="pendingTable">
-                <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
-                    filters={filters} emptyMessage="No records found."
-                    paginator rows={8}
-                    tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
-                    <Column field="userID" header="User ID"></Column>
-                    <Column field="requestID" header="Request ID"sortable></Column>
-                    <Column field="fileType" header="File Type"sortable></Column>
-                    <Column field="fileName" header="File Name"></Column>
-                    <Column field="requestDate" header="Request Date"></Column>
-                    <Column field="useDate" header="Use Date"></Column>
-                    <Column field="status" header="Status" body={statusBodyTemplate}sortable></Column>
-                </DataTable>
+            <DataTable value={values} scrollable scrollHeight="28vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']} 
+                filters={filters}  emptyMessage="No records found."
+                paginator rows={8}
+                tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
+                <Column field="userID" header="User ID"></Column>
+                <Column field="requestID" header="Request ID"></Column>
+                <Column field="fileType" header="File Type"></Column>
+                <Column field="fileName" header="File Name"></Column>
+                <Column field="requestDate" header="Request Date"></Column>
+                <Column field="useDate" header="Use Date"></Column>
+                <Column field="status" header="Status" body={statusBodyTemplate}></Column>
+            </DataTable>
             </div>
-            <div id="overlay" className={show} onClick={closeModal}></div>
-            <div id="requestBox" className={show}>
+            <div id="overlay" className = {show} onClick={closeModal}></div>
+                <div id="requestBox" className ={show}>
                 <div id='boxDeets'>
 
                     <div id='firstLine'>
@@ -405,13 +405,13 @@ const Pending = () => {
 
                     <div id='fourthLine'>
                         <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
-                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}>No. of Copies: <p className='specText'>{noOfCopies}</p>
                             </div>
                         </p>
                     </div>
                     <div id='fourthLine'>
                         <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
-                            <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
+                            <div id='numberCopies' style={{marginLeft: '2.9vw'}}> PaperType: <p className='specText'>{paperType}</p></div>
                         </p>
                     <br></br>
                     </div>
@@ -420,29 +420,32 @@ const Pending = () => {
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                     <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
 
-                </div>
-                <p id='additionalInstructions'>{title}</p>
-                <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
-                <DataTable value={comments} header={commentTableHeader}
-                        scrollable scrollHeight="17.48vw"
-                        emptyMessage="No comments found." id='tableOfComments'
-                        paginator rows={5}
-                        tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
-                        <Column field="sentBy" header="Sent by"></Column>
-                        <Column field="content" header="Content"></Column>
-                        <Column field="sentDate" header="Date"></Column>
-                </DataTable>
-
-                <div id="overlay" className = {commentShow} onClick={closeComment}></div>
-                <div id="deetCommentBody" className ={commentShow}>
-                    <div id='commBod'>
-                        <p>{commentDate}</p>
-
-                        <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
-                        <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                     </div>
+                            
+                  
+                            <p id='additionalInstructions'>{title}</p>
+                            <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
+                            <DataTable value={comments} header={commentTableHeader}
+                                    scrollable scrollHeight="17.48vw"
+                                    emptyMessage="No comments found." id='tableOfComments'
+                                    paginator rows={5}
+                                    tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
+                                    <Column field="sentBy" header="Sent by"></Column>
+                                    <Column field="content" header="Content"></Column>
+                                    <Column field="sentDate" header="Date"></Column>
+                            </DataTable>
+
+                            <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+                            <div id="deetCommentBody" className ={commentShow}>
+                                <div id='commBod'>
+                                    <p>{commentDate}</p>
+ 
+                                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                                </div>
+                            </div>
+
                 </div>
-            </div>
         </div>
     );
 };
