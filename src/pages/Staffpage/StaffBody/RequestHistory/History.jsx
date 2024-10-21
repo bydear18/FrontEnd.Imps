@@ -81,7 +81,20 @@ const History = ({reqHistory}) => {
 
       };
     
+      const downloadFile = (url) => {
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank'; // Open in new tab
+        link.download = ''; // Optional: Set a filename if needed
 
+        // Append to the body
+        document.body.appendChild(link);
+        link.click(); // Trigger the download
+
+        // Clean up and remove the link
+        document.body.removeChild(link);
+    };
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
@@ -255,6 +268,11 @@ const History = ({reqHistory}) => {
                 setRequesterEmail(data['requesterEmail']);
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
+
+                if (data['downloadURL']) {
+                    downloadFile(data['downloadURL']);
+                }
+                
                 fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
@@ -475,7 +493,7 @@ const History = ({reqHistory}) => {
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
-                            <a id='pendingGetRequest' download={fileName}>
+                            <a id='pendingGetRequest' onClick={downloadFile} download={fileName}>
                                 Get Request File
                             </a>
                         )}
