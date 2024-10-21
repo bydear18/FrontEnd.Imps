@@ -273,6 +273,7 @@ const History = ({reqHistory}) => {
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
+    
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
