@@ -347,9 +347,19 @@ const History = ({reqHistory}) => {
                     ...item,
                     status: statusMap[item.status] || item.status,
                 }));
-                
-                // Filter data by schoolId if it's set
-                const filteredData = updatedData.filter(item => item.userID === schoolId);
+
+                console.log("School ID:", schoolId); // Log the schoolId
+
+                // Filter data and log comparisons
+                const filteredData = updatedData.filter(item => {
+                    console.log(`Comparing userID: ${item.userID} with schoolId: ${schoolId}`);
+                    const isMatch = item.userID === schoolId;
+                    if (isMatch) {
+                        console.log(`Match found: userID ${item.userID} is equal to schoolId ${schoolId}`);
+                    }
+                    return isMatch;
+                });
+
                 setValues(filteredData);
             })
             .catch((error) => {
