@@ -26,6 +26,7 @@ const Navbar = () => {
     const [infoStep, setInfoStep] = useState(0);
     const [disabled, setDisabled] = useState(true);
     const [firstName, setFirstName] = useState(localStorage.getItem("firstName"));
+    const [accType, setAccType] = useState(localStorage.getItem("accType"));
     const [role, setRole] = useState(localStorage.getItem("role"));
     const [lastName, setLastName] = useState(localStorage.getItem("lastName"));
     const [email, setEmail] = useState(localStorage.getItem("email"));
@@ -42,6 +43,12 @@ const Navbar = () => {
     const closeInfoPop = () => {
       setAlert('hide');
     }
+
+
+    if(role === 'employee'){
+        role = setAccType(localStorage.getItem("accType"));
+    }
+
     // Fetch notifications and admin check
     useEffect(() => {
         const userID = localStorage.getItem("userID");
