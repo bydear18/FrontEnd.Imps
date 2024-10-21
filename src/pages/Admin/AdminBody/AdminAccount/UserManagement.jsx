@@ -389,7 +389,6 @@ const UserManagement = () => {
                 <Column field="lastName" header="Last Name"></Column>
                 <Column field="email" header="Email"></Column>
                 <Column field="role" header="Role"></Column>
-                <Column field="Action" header="Action" body={roleBodyTemplate}></Column>
             </DataTable>
         </div>
 
