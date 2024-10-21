@@ -15,6 +15,7 @@ const Pending = () => {
     const [show, setShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
     const [commentShow, setCommentShow] = useState('hide');
+    const [commentDisabled, setCommentDisabled] = useState('hide');
     const [rejectDisable, setRejectDisable] = useState(false);
     const [statusClass, setStatusClass] = useState('reqStatRejected');
     const [values, setValues] = useState([]);
@@ -35,6 +36,8 @@ const Pending = () => {
     const [requestID, setRequestID] = useState();
     const [department, setDepartment] = useState('');
     const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [role, setRole] = useState('');
     const [desc, setDesc] = useState('');
     const [fileName, setFileName] = useState('');
@@ -70,7 +73,14 @@ const Pending = () => {
     };
     const [infoPopUpVisible, setInfoPopUpVisible] = useState(false);
     const [infoMessage, setInfoMessage] = useState('');
-    
+    const handleAddComment = () => {
+        setCommentDate(currentDate);
+        setCommentHeader('');
+        setEditable(false);
+        setCommentContent('');
+        setButtonShow('show');
+        setCommentShow('show');
+    }
     const handleCommentChange = (event) => {
         const value = event.value;
         setSelectedComment(value);
@@ -107,6 +117,55 @@ const Pending = () => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
+    const createComment = () => {
+        const commentData = new FormData();
+        if (firstName && lastName) {
+            commentData.append("sentBy", `${firstName} ${lastName}`);
+        } else {
+            console.error("First name and last name must be provided");
+        }
+        commentData.append("header", commentHeader);
+        commentData.append("content", commentContent);
+        commentData.append("sentDate", commentDate);
+        commentData.append("requestID", requestID);
+        
+        const requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            };
+            if(commentContent!=null && commentContent!==''){
+                const requestOptionsComment = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: commentData
+                  };
+                fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
+                .then((response)=> response.json()
+                                        ).then((data) => {
+                                            fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
+                                            ).then((data) => { 
+                                                setComments(data);
+                                                setEditable(true);
+                                                setButtonShow('hide');
+                                                setCommentShow('hide');
+                                            })
+                                            .catch(error =>
+                                            {
+                                                console.log(error);
+                                            }
+                                            );
+                                        })
+                                        .catch(error =>
+                                        {
+                                            console.log(error);
+                                        }
+                                    );
+                }
+
+    }
 
     const handleAccept = () => {
         const requestOptions = {
@@ -253,6 +312,8 @@ const Pending = () => {
                 setNoOfCopies(data['noOfCopies']);
                 setPaperSize(data['paperSize']);
                 setEmail(data['requesterEmail']);
+                setFirstName(data['firstName']);
+                setLastName(data['LastName']);
                 setRole(data['role']);
                 
                 console.log(data['schoolId']);
