@@ -188,7 +188,7 @@ const History = ({reqHistory}) => {
           },
           };
 
-          fetch("http://localhost:8080/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions).then((response)=> response.json()
+          fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions).then((response)=> response.json()
             ).then((data) => { 
                 setFileName(data['fileName']);
                 setDepartment(data['department']);
@@ -209,7 +209,7 @@ const History = ({reqHistory}) => {
                 setRequesterEmail(data['requesterEmail']);
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
-                fetch("http://localhost:8080/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
+                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
                     if(data['status'] === 'Rejected'){
@@ -234,7 +234,7 @@ const History = ({reqHistory}) => {
                         setStatus('Ready to Claim');
                         setStatusClass('capsuleCompleted');
                     }
-                    fetch("http://localhost:8080/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
+                    fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
                         setComments(data);
                         if(data[0].sentBy == 'Head'){
@@ -315,7 +315,7 @@ const History = ({reqHistory}) => {
           },
         };
     
-        fetch("http://localhost:8080/records/all", requestOptions)
+        fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 const statusMap = {
@@ -407,7 +407,27 @@ const History = ({reqHistory}) => {
                 <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
                 <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                 <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
-
+                <div id="deetCommentBody" className={commentShow}>
+                <div id='commBod'>
+                    <p>{commentDate}</p>
+                    <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
+                    <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
+                    {selectedComment === 'Other' && (
+                    <div>
+                        <textarea 
+                            className = 'showOther'
+                            placeholder="Please specify..." 
+                            value={otherComment} 
+                            onChange={(e) => setOtherComment(e.target.value)} 
+                        />
+                        <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
+                    </div>
+                )}
+                {selectedComment !== 'Other' && (
+                        <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
+                )} 
+                </div>
+            </div>
             </div>
             <p id='additionalInstructions'>{title}</p>
             <textarea id='instruction' disabled='true' value={content}>{content}</textarea>

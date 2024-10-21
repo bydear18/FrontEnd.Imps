@@ -7,7 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import React, { useEffect, useState } from 'react';
-import './pending.css';
+import './history.css';
 
 const Pending = () => {
     const [alert, setAlert] = useState('hide');
