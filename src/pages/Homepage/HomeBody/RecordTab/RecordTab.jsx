@@ -337,7 +337,11 @@ const History = ({reqHistory}) => {
         fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
         ).then((data) => {
             fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
-            ).then((data) => { setValues(data);})
+            ).then((data) => { 
+                setValues(data);
+                console.log(data['email']);
+                console.log(data['schoolId']);
+            })
             .catch(error =>
             {
                 console.log(error);
