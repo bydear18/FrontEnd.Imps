@@ -103,6 +103,51 @@ const History = ({reqHistory}) => {
         setButtonShow('show');
         setCommentShow('show');
     }
+    const createComment = () => {
+        const commentData = new FormData();
+        commentData.append("sentBy", `Staff`);
+        commentData.append("header", commentHeader);
+        commentData.append("content", commentContent);
+        commentData.append("sentDate", commentDate);
+        commentData.append("requestID", requestID);
+        
+        const requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            };
+            if(commentContent!=null && commentContent!==''){
+                const requestOptionsComment = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: commentData
+                  };
+                fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
+                .then((response)=> response.json()
+                                        ).then((data) => {
+                                            fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
+                                            ).then((data) => { 
+                                                setComments(data);
+                                                setEditable(true);
+                                                setButtonShow('hide');
+                                                setCommentShow('hide');
+                                            })
+                                            .catch(error =>
+                                            {
+                                                console.log(error);
+                                            }
+                                            );
+                                        })
+                                        .catch(error =>
+                                        {
+                                            console.log(error);
+                                        }
+                                    );
+                }
+
+    }
 
     const handleComplete = () => {
         
