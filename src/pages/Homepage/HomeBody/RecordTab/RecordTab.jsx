@@ -359,7 +359,7 @@ const History = ({reqHistory}) => {
 
     return(
         <div>
-<div id="pendingTable">
+            <div id="pendingTable">
             <DataTable 
                 value={values.filter(record => record.userID === localStorage.getItem("userID"))} 
                 scrollable 
