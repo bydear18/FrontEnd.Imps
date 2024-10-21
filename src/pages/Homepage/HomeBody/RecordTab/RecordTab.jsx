@@ -31,7 +31,7 @@ const History = ({reqHistory}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const userEmail = localStorage.getItem("email");
-
+    const schoolId = localStorage.getItem("schoolId");
     // Details
     const [selectedComment, setSelectedComment] = useState(null);
     const [requestID, setRequestID] = useState();
@@ -52,7 +52,6 @@ const History = ({reqHistory}) => {
     const [fileType, setFileType] = useState('');
     const [status, setStatus] = useState('');
     const [userID, setUserID] = useState('');
-    const [schoolId, setSchoolId]= useState('');
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState([]);
     const [requesterName, setRequesterName] = useState('');
@@ -224,7 +223,6 @@ const History = ({reqHistory}) => {
                 setRequestDate(data['requestDate']);
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
-                setSchoolId(data['schoolId']);
                 console.log('SchoolId:', schoolId);
                 setColorType(data['colored']);
                 setNoOfCopies(data['noOfCopies']);
