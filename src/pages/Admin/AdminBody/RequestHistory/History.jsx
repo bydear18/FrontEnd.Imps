@@ -59,7 +59,7 @@ const Pending = () => {
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const [downloadURL, setDownloadURL] = useState('');
-
+    const [commentDisabled, setCommentDisabled] = useState('hide');
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
@@ -212,9 +212,18 @@ const Pending = () => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
+                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
             </div>
         );
     };
+    const handleAddComment = () => {
+        setCommentDate(currentDate);
+        setCommentHeader('');
+        setEditable(false);
+        setCommentContent('');
+        setButtonShow('show');
+        setCommentShow('show');
+    }
 
     const header = renderHeader();
     const commentTableHeader = renderCommentHeader();
@@ -489,16 +498,16 @@ const Pending = () => {
 
                     </div>
                         
-                        <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a>
+                        {/* <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a> */}
 
-
+                        <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
+                        <textarea id='instruction' disabled='true' value={content}></textarea>
                         <DataTable value={comments} header={commentTableHeader}
                                 scrollable scrollHeight="17.48vw"
                                 emptyMessage="No comments found." id='tableOfComments'
                                 paginator rows={5}
                                 tableStyle={{ minWidth: '5vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
                                 <Column field="sentBy" header="Sent by"></Column>
-                                <Column field="header" header="Header"></Column>
                                 <Column field="content" header="Content"></Column>
                                 <Column field="sentDate" header="Date"></Column>
                         </DataTable>
