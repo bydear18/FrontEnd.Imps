@@ -505,11 +505,7 @@ const History = ({reqHistory}) => {
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
-                            <a id='pendingGetRequest' onClick={downloadFile}>
-                                Get Request File
-                            </a>
-
-
+                            <button onClick={downloadFile}>Get Request File</button>
                         )}
                         {status === "Approved for Printing" && (
                             <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
