@@ -331,29 +331,32 @@ const History = ({reqHistory}) => {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
-          },
-          };
-
-        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
-        ).then((data) => {
-            fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
-            ).then((data) => { 
-                setValues(data);
-                console.log(data['email']);
-                console.log(data['schoolId']);
+            },
+        };
+    
+        // Get the current user's email from localStorage
+        const userEmail = localStorage.getItem("email");
+    
+        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                // Fetch records using userID
+                fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Filter records where the email matches the one from localStorage
+                        const filteredData = data.filter(record => record.requesterEmail === userEmail);
+                        setValues(filteredData); // Set the filtered data to the table
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             })
-            .catch(error =>
-            {
+            .catch(error => {
                 console.log(error);
-            }
-            );
-        })
-        .catch(error =>
-            {
-                console.log(error);
-            }
-        );
-    });
+            });
+    }, []);
+    
 
     return(
         <div>
