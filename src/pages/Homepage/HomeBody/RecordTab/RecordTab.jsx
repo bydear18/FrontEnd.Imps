@@ -329,13 +329,27 @@ const Pending = () => {
                     .then((data) => {
                         setStatus(data['status']);
 
+                        if(data['status'] === 'Rejected'){
+                            setRejected('show');
+                            setCommentDisabled('hide');
+                        }else if (data['status'] === 'Completed'){
+                            setRejected('hide');
+                        }else{
+                            setRejected('show');
+                            setCommentDisabled('show');
+                        }
+    
                         if (data['status'] === 'Rejected') {
+                            setStatus('Rejected');
                             setStatusClass('capsuleRejected');
                         } else if (data['status'] === 'Pending') {
+                            setStatus('Waiting for Approval');
                             setStatusClass('capsulePending');
                         } else if (data['status'] === 'In Progress') {
+                            setStatus('Approved for Printing');
                             setStatusClass('capsuleProgress');
                         } else if (data['status'] === 'Completed') {
+                            setStatus('Ready to Claim');
                             setStatusClass('capsuleCompleted');
                         }
                         fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions)
@@ -361,14 +375,19 @@ const Pending = () => {
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'info';
-
-            case 'New':
-                return 'info';
-
-            case 'Pending':
                 return 'warning';
 
+            case 'Rejected':
+                return 'danger';
+
+            case 'Approved for Printing':
+                return 'info';
+
+            case 'Ready to Claim':
+                return 'success';
+
+            case 'Claimed':
+                return 'success';
             case '':
                 return null;
         }
