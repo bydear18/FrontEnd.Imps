@@ -166,19 +166,8 @@ const UserManagement = () => {
   };
 
   const roleBodyTemplate = (rowData) => {
-    if(rowData.role === 'staff'){
-      return (
-        <div>
-          <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
-            Edit
-          </button>
-          <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
-            Delete
-          </button>
-        </div>
-      );
-    }
-    else if(rowData.role === 'employee' && rowData.adminVerified === false){
+
+    if(rowData.role === 'employee' && rowData.adminVerified === false){
       return (
         <div>
           <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
