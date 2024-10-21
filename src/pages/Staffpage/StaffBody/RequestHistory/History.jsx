@@ -84,14 +84,15 @@ const History = ({reqHistory}) => {
       const downloadFile = () => {
         const link = document.createElement('a');
         link.href = downloadURL;
-        link.download = ''; 
-    
+        link.download = ''; // Optional: Specify a filename if desired
+
+        // Append link to the body
         document.body.appendChild(link);
-        link.click(); 
+        // Trigger the download
+        link.click();
+        // Remove the link from the document
         document.body.removeChild(link);
     };
-
-
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
@@ -489,6 +490,8 @@ const History = ({reqHistory}) => {
                             <a id='pendingGetRequest' onClick={downloadFile}>
                                 Get Request File
                             </a>
+
+
                         )}
                         {status === "Approved for Printing" && (
                             <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
