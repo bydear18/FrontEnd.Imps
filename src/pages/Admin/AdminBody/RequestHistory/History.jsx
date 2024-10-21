@@ -20,6 +20,7 @@ const History = ({reqHistory}) => {
     const [completeDisable, setCompleteDisable] = useState(false);
     const [commentDisabled, setCommentDisabled] = useState('hide');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [content, setContent] = useState([]);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }});
 
@@ -221,7 +222,7 @@ const History = ({reqHistory}) => {
                 ).then((data) => { 
                     setStatus(data['status']);
                     if(data['status'] === 'Rejected'){
-                        setRejected('hide');
+                        setRejected('show');
                         setCommentDisabled('hide');
                     }else if (data['status'] === 'Completed'){
                         setRejected('hide');
@@ -230,19 +231,31 @@ const History = ({reqHistory}) => {
                         setCommentDisabled('show');
                     }
 
-                    if(data['status'] === 'Rejected'){
+                    if (data['status'] === 'Rejected') {
+                        setStatus('Rejected');
                         setStatusClass('capsuleRejected');
-                    }else if(data['status'] === 'Pending'){
+                    } else if (data['status'] === 'Pending') {
+                        setStatus('Waiting for Approval');
                         setStatusClass('capsulePending');
-                    }else if(data['status'] === 'In Progress'){
+                    } else if (data['status'] === 'In Progress') {
+                        setStatus('Approved for Printing');
                         setStatusClass('capsuleProgress');
-                    }else if(data['status'] === 'Completed'){
+                    } else if (data['status'] === 'Completed') {
+                        setStatus('Ready to Claim');
                         setStatusClass('capsuleCompleted');
                     }
                     fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
                         setComments(data);
-                        
+                        if(data[0].sentBy == 'Head'){
+                            setTitle('REASON FOR REJECTION');
+                            setContent(data[0].content);
+                            console.log(data[0].content);
+                            
+                        } else{
+                            setTitle('ADDITIONAL INSTRUCTION');
+                            setContent(data[0].content);
+                        }
                     })
                     .catch(error =>
                     {
