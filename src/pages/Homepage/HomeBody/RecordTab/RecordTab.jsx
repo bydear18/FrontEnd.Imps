@@ -51,6 +51,26 @@ const RecordTab = () => {
     const [commentDate, setCommentDate] = useState('');
     const [editable, setEditable] = useState(true);
 
+    const [error, setError] = useState(null);
+    const [alert, setAlert] = useState('hide');
+    const [alertMsg, setAlertMsg] = useState('');
+    const [rejectDisable, setRejectDisable] = useState(false);
+  
+    const [selectedComment, setSelectedComment] = useState(null);
+    const [otherComment, setOtherComment] = useState('');
+
+    const [email, setEmail] = useState('');
+    const [role, setRole] = useState('');
+    const [colorType, setColorType] = useState('');
+    const [paperType, setPaperType] = useState('');
+    const [schoolId, setSchoolId]= useState('');
+    const [content, setContent] = useState([]);
+    const [requesterName, setRequesterName] = useState('');
+    const [requesterEmail, setRequesterEmail] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [downloadURL, setDownloadURL] = useState('');
+    const [success, setSuccess] = useState(false);
+
     const getDate = () => {
         const today = new Date();
         return today.toISOString().substring(0,10);
@@ -94,7 +114,7 @@ const RecordTab = () => {
         );
     };
 
-    const renderCommentTableHeader = () => {
+    const renderCommentHeader = () => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
@@ -124,37 +144,60 @@ const RecordTab = () => {
           },
           };
 
-          fetch("http://localhost:8080/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions).then((response)=> response.json()
+          fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions).then((response)=> response.json()
             ).then((data) => { 
                 console.log(data);
                 setFileName(data['fileName']);
                 setFileType(data['fileType']);
+                setDepartment(data['department']);
+                setPaperType(data['paperType']);
                 setColored(data['color']);
-                setToStaple(data['stapled']);
+                setColorType(data['colored']);
                 setGiveExam(data['giveExam']);
+                setSchoolId(data['schoolId']);
                 setDesc(data['description']);
                 setRequestDate(data['requestDate']);
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
                 setNoOfCopies(data['noOfCopies']);
-                setBindType(data['bindType']);
                 setPaperSize(data['paperSize']);
+                setEmail(data['requesterEmail']);
+                setRole(data['role']);
+                
+                console.log(data['schoolId']);
                 setUserID(data['userID']);
-                console.log(data['description']);
-                fetch("http://localhost:8080/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
+                setRequesterEmail(data['requesterEmail']);
+                setRequesterName(data['requesterName']);
+                setContactNumber(data['requesterNumber']);
+                setDownloadURL(data['downloadURL']);
+
+                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
 
                     if(data['status'] === 'Rejected'){
+                        setRejected('show');
+                        setCommentDisabled('hide');
+                    }else if (data['status'] === 'Completed'){
+                        setRejected('hide');
+                    }else{
+                        setRejected('show');
+                        setCommentDisabled('show');
+                    }
+                    if (data['status'] === 'Rejected') {
+                        setStatus('Rejected');
                         setStatusClass('capsuleRejected');
-                    }else if(data['status'] === 'Pending'){
+                    } else if (data['status'] === 'Pending') {
+                        setStatus('Waiting for Approval');
                         setStatusClass('capsulePending');
-                    }else if(data['status'] === 'In Progress'){
+                    } else if (data['status'] === 'In Progress') {
+                        setStatus('Approved for Printing');
                         setStatusClass('capsuleProgress');
-                    }else if(data['status'] === 'Completed'){
+                    } else if (data['status'] === 'Completed') {
+                        setStatus('Ready to Claim');
                         setStatusClass('capsuleCompleted');
                     }
-                    fetch("http://localhost:8080/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
+                    fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
                         console.log(data);
                         setComments(data);
@@ -185,17 +228,19 @@ const RecordTab = () => {
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'info';
+                return 'warning';
 
             case 'Rejected':
                 return 'danger';
 
-            case 'In Progress':
+            case 'Approved for Printing':
                 return 'info';
 
-            case 'Completed':
+            case 'Ready to Claim':
                 return 'success';
 
+            case 'Claimed':
+                return 'success';
             case '':
                 return null;
         }
@@ -224,9 +269,9 @@ const RecordTab = () => {
                     mode: 'cors',
                     body: commentData
                   };
-                fetch("http://localhost:8080/comments/newComment", requestOptionsComment).then((response)=> response.json()
+                fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment).then((response)=> response.json()
                                         ).then((data) => {
-                                            fetch("http://localhost:8080/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
+                                            fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
                                             ).then((data) => { 
                                                 setComments(data);
                                                 setEditable(true);
@@ -265,9 +310,9 @@ const RecordTab = () => {
           },
           };
 
-        fetch("http://localhost:8080/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
+        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
         ).then((data) => {
-            fetch("http://localhost:8080/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
+            fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
             ).then((data) => { setValues(data);})
             .catch(error =>
             {
@@ -305,36 +350,53 @@ const RecordTab = () => {
                         <h1 id='requestID'>{requestID}</h1>
                         <div className={statusClass}>{status}</div>
                         <p id='typeOfFile'>• {fileType}</p>
-                        <p className='dates'>Request Date: <p id='dateRequest'>{requestDate}</p></p>
-                        <p className='dates'>Use Date: <p id='dateUse'>{useDate}</p></p>
+                        <p className='dates'>Date Requested: <p id='dateRequest'>{requestDate}</p></p>
+                        <p className='dates'>Date Needed: <p id='dateUse'>{useDate}</p></p>
                     </div>
 
-                    {/* <p id='requester'>Request from:<p id='userID'>{userID}</p></p> */}
+                    <p id='requester'>Request from:<p id='schoolId'>{schoolId}</p></p>
 
                     <div id='fileDeets'>FILE DETAILS</div>
 
                     <div id='secondLine'>
-                        <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName}/>
+                        <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName} />
                     </div>
 
                     <textarea id='descriptionOfFile' disabled='true' value={desc}>{desc}</textarea>
 
                     <div id='thirdLine'>
                         <div id='hatagExam'>Give exam personally: </div>
-                        <input id='examBox' type='checkbox' value={giveExam} disabled='true'/>
+                        <input id='examBox' type='checkbox' checked={giveExam} disabled='true' />
                     </div>
-
-                    <div id='fileDeets'>PRINT SPECS</div>
+                    <br></br>
+                    <div id='fileDeets' style={{marginBottom:'.5vw'}}>PRINT SPECS</div>
 
                     <div id='fourthLine'>
-                        <p id='coloredBa'>Colored:<input id='boxColor' type='checkbox' value={colored} disabled='true'/> 
-                        <div id='numberCopies'># of Copies: <p className='specText'>{noOfCopies}</p>
-                        </div> <div id='numberCopies'>Paper Size: <p className='specText'>{paperSize}</p>
-                        </div>
-                        </p> 
-                        <p id='whatBind'>Bind: <p className='specText'>{bindType}</p> <div id='numberCopies'>Stapled? <input id='boxColor' type='checkbox' value={toStaple} disabled='true'/>
-                        </div> </p>
+                        <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
+                            </div>
+                        </p>
                     </div>
+                    <div id='fourthLine'>
+                        <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
+                            <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
+                        </p>
+                    <br></br>
+                    </div>
+                    <div id='contactDeets' style={{marginBottom:'.5vw'}}>REQUESTER'S INFORMATION</div>
+                    <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
+                    <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
+                    <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
+
+                    <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className ={commentShow}>
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                        </div>
+                    </div>
+
                 </div>
                             
                             <DataTable value={comments} header={commentTableHeader}
@@ -347,15 +409,6 @@ const RecordTab = () => {
                                     <Column field="content" header="Content"></Column>
                                     <Column field="sentDate" header="Date"></Column>
                             </DataTable>
-                            <div id="overlay" className = {commentShow} onClick={closeComment}></div>
-                            <div id="deetCommentBody" className ={commentShow}>
-                                <div id='commBod'>
-                                    <p>{commentDate}</p>
-                                    <input type='text' value={commentHeader} disabled={editable} id='commHead' placeholder="Enter Comment Header..." onChange={(e)=>{setCommentHeader(e.target.value)}}/>
-                                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
-                                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
-                                </div>
-                            </div>
                 </div>
                 
             
