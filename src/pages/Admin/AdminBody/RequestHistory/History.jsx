@@ -19,6 +19,8 @@ const Pending = () => {
     const [statusClass, setStatusClass] = useState('reqStatRejected');
     const [values, setValues] = useState([]);
     const [title, setTitle] = useState('');
+    const [disabled,setDisabled] = useState(false);
+    const [rejected,setRejected] = useState('hide');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -510,9 +512,9 @@ const Pending = () => {
                                 <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                             </div>
                         </div>
-                        <div id='columnizer'>
+                        {/* <div id='columnizer'>
                         <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>Mark as Complete</button>
-                        </div>
+                        </div> */}
             </div>
     </div>
 );
