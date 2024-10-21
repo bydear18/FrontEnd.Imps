@@ -265,7 +265,7 @@ const Pending = () => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
-                
+                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
             </div>
         );
     };
@@ -522,11 +522,7 @@ const Pending = () => {
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
                 
-                <div id='columnizer'>
-                    <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
-                    <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
-                    <button id='approved' className='pendButtons' onClick={handleAccept}>Accept</button>
-                </div>
+
                 </div>
         </div>
     );
