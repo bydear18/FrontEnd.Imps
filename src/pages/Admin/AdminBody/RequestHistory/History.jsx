@@ -108,7 +108,7 @@ const History = ({reqHistory}) => {
                     mode: 'cors',
                     body: commentData
                   };
-                fetch("https://backimps-production.up.railway.app/comments/newComments", requestOptionsComment)
+                fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
                 .then((response)=> response.json()
                                         ).then((data) => {
                                             fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
