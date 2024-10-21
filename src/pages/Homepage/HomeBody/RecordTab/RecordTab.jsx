@@ -336,7 +336,7 @@ const History = ({reqHistory}) => {
     
         const currentUserID = localStorage.getItem("userID"); // Get the userID from localStorage
         
-        fetch("http://localhost:8080/records/all", requestOptions)
+        fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 const statusMap = {
