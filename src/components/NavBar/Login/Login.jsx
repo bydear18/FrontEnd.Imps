@@ -61,6 +61,7 @@ const Login = () => {
                           localStorage.setItem("college", data['college']);
                           localStorage.setItem("accType", data['accType']);
 
+                          
                           fetch("https://backimps-production.up.railway.app/services/getid?email=" + email, requestOptions)
                           .then((response) => response.json())
                           .then((data) => {
