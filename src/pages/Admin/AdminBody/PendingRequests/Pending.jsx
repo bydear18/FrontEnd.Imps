@@ -232,7 +232,7 @@ const Pending = () => {
             },
         };
 
-        fetch("http://localhost:8080/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions)
+        fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setFileName(data['fileName']);
@@ -257,7 +257,7 @@ const Pending = () => {
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
                 setDownloadURL(data['downloadURL']);
-                fetch("http://localhost:8080/records/requestid?id=" + event.data.requestID, requestOptions)
+                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions)
                     .then((response) => response.json())
                     .then((data) => {
                         setStatus(data['status']);
@@ -284,7 +284,7 @@ const Pending = () => {
                             setStatus('Ready to Claim');
                             setStatusClass('capsuleCompleted');
                         }
-                        fetch("http://localhost:8080/comments/id?id=" + event.data.requestID, requestOptions)
+                        fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions)
                             .then((response) => response.json())
                             .then((data) => {
                                 setComments(data);
@@ -350,7 +350,7 @@ const Pending = () => {
             },
         };
 
-        fetch("http://localhost:8080/records/pending", requestOptions)
+        fetch("https://backimps-production.up.railway.app/records/pending", requestOptions)
             .then((response) => response.json())
             .then((data) => { setValues(data); })
             .catch((error) => {
