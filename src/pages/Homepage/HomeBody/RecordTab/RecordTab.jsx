@@ -347,6 +347,7 @@ const History = ({reqHistory}) => {
                         // Filter records where the email matches the one from localStorage
                         const filteredData = data.filter(record => record.requesterEmail === userEmail);
                         setValues(filteredData); // Set the filtered data to the table
+                        console.log(values);
                     })
                     .catch(error => {
                         console.log(error);
