@@ -26,7 +26,6 @@ const Navbar = () => {
     const [infoStep, setInfoStep] = useState(0);
     const [disabled, setDisabled] = useState(true);
     const [firstName, setFirstName] = useState(localStorage.getItem("firstName"));
-    const [accType, setAccType] = useState(localStorage.getItem("accType"));
     const [role, setRole] = useState(localStorage.getItem("role"));
     const [lastName, setLastName] = useState(localStorage.getItem("lastName"));
     const [email, setEmail] = useState(localStorage.getItem("email"));
@@ -55,9 +54,6 @@ const Navbar = () => {
                 .then(response => response.json())
                 .then(() => {
                     setNotifShow('show');
-                    if(role === 'employee'){
-                        setRole(accType);
-                    }
                     return fetch(`https://backimps-production.up.railway.app/notifications/id?id=${userID}`, { method: 'GET', mode: 'cors', headers: { 'Content-Type': 'application/json' } });
                 })
                 .then(response => response.json())
