@@ -12,6 +12,7 @@ import './headpending.css';
 const Pending = () => {
     const [error, setError] = useState(null);
     const [alert, setAlert] = useState('hide');
+    const [rejected,setRejected] = useState('hide');
     const [alertMsg, setAlertMsg] = useState('');
     const [show, setShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
