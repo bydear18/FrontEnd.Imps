@@ -333,7 +333,7 @@ const History = ({reqHistory}) => {
                 'Content-Type': 'application/json',
             },
         };
-    
+        console.log(userEmail);
         fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {

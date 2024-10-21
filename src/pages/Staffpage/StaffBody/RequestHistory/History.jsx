@@ -475,7 +475,7 @@ const History = ({reqHistory}) => {
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
-                            <a id='pendingGetRequest' href={downloadURL} download={fileName}>
+                            <a id='pendingGetRequest' download={fileName}>
                                 Get Request File
                             </a>
                         )}
