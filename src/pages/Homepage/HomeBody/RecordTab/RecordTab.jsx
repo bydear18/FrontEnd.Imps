@@ -1,4 +1,4 @@
-import './history.css';
+import './recordtab.css';
 
 import React, {
     useEffect,
