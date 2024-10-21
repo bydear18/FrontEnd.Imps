@@ -152,6 +152,14 @@ const Pending = () => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
+    const handleAddComment = () => {
+        setCommentDate(currentDate);
+        setCommentHeader('');
+        setEditable(false);
+        setCommentContent('');
+        setButtonShow('show');
+        setCommentShow('show');
+    }
 
     const handleAccept = () => {
         const requestOptions = {
@@ -256,9 +264,11 @@ const Pending = () => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
+                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
             </div>
         );
     };
+
 
     const header = renderHeader();
     const commentTableHeader = renderCommentHeader();
