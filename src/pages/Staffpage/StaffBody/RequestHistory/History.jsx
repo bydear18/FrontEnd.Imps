@@ -81,35 +81,6 @@ const History = ({reqHistory}) => {
 
       };
     
-      const downloadFile = async () => {
-        try {
-            // Fetch the file data
-            const response = await fetch(downloadURL);
-            if (!response.ok) throw new Error('Network response was not ok');
-
-            // Create a blob from the response
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-
-            // Create a temporary anchor element
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName; // Specify a filename for the download
-
-            // Append the link to the body
-            document.body.appendChild(link);
-            // Programmatically trigger a click on the link
-            link.click();
-            // Remove the link from the document
-            document.body.removeChild(link);
-
-            // Clean up the object URL
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error('Download error:', error);
-        }
-    };
-
 
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
@@ -284,7 +255,6 @@ const History = ({reqHistory}) => {
                 setRequesterEmail(data['requesterEmail']);
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
-
                 fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
@@ -505,7 +475,9 @@ const History = ({reqHistory}) => {
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
-                            <button onClick={downloadFile}>Get Request File</button>
+                            <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
+                                Get Request File
+                            </a>
                         )}
                         {status === "Approved for Printing" && (
                             <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
