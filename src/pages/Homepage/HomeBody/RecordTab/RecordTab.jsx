@@ -330,30 +330,28 @@ const History = ({reqHistory}) => {
             method: 'GET',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
         };
     
-        // Get the current user's email from localStorage
-        const userEmail = localStorage.getItem("email");
-    
-        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions)
+        fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                // Fetch records using userID
-                fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // Filter records where the email matches the one from localStorage
-                        const filteredData = data.filter(record => record.requesterEmail === userEmail);
-                        setValues(filteredData); // Set the filtered data to the table
-                        console.log(values);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                const statusMap = {
+                    'Pending': 'Waiting for Approval',
+                    'In Progress': 'Approved for Printing',
+                    'Completed': 'Ready to Claim',
+                };
+
+                const updatedData = data.map(item => ({
+                    ...item,
+                    status: statusMap[item.status] || item.status, 
+                }));
+    
+                setValues(updatedData);
+                console.log(updatedData);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
             });
     }, []);
@@ -361,20 +359,30 @@ const History = ({reqHistory}) => {
 
     return(
         <div>
-            <div id="pendingTable">
-                <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
-                    filters={filters} emptyMessage="No records found."
-                    paginator rows={8}
-                    tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
-                    <Column field="userID" header="User ID"></Column>
-                    <Column field="requestID" header="Request ID"sortable></Column>
-                    <Column field="fileType" header="File Type"sortable></Column>
-                    <Column field="fileName" header="File Name"></Column>
-                    <Column field="requestDate" header="Request Date"></Column>
-                    <Column field="useDate" header="Use Date"></Column>
-                    <Column field="status" header="Status" body={statusBodyTemplate}sortable></Column>
-                </DataTable>
-            </div>
+<div id="pendingTable">
+            <DataTable 
+                value={values.filter(record => record.userID === localStorage.getItem("userID"))} 
+                scrollable 
+                scrollHeight="30vw" 
+                header={header} 
+                globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
+                filters={filters} 
+                emptyMessage="No records found."
+                paginator 
+                rows={8}
+                tableStyle={{ minWidth: '20vw' }} 
+                selectionMode="single" 
+                onRowSelect={onRowSelect}>
+                
+                <Column field="userID" header="User ID"></Column>
+                <Column field="requestID" header="Request ID" sortable></Column>
+                <Column field="fileType" header="File Type" sortable></Column>
+                <Column field="fileName" header="File Name"></Column>
+                <Column field="requestDate" header="Request Date"></Column>
+                <Column field="useDate" header="Use Date"></Column>
+                <Column field="status" header="Status" body={statusBodyTemplate} sortable></Column>
+            </DataTable>
+        </div>
             <div id="overlay" className={show} onClick={closeModal}></div>
             <div id="requestBox" className={show}>
                 <div id='boxDeets'>

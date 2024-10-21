@@ -509,14 +509,27 @@ const Pending = () => {
                         </div>
                     </div>
                     <div id="overlay" className = {commentShow} onClick={closeComment}></div>
-                    <div id="deetCommentBody" className ={commentShow}>
+                    <div id="deetCommentBody" className={commentShow}>
                         <div id='commBod'>
                             <p>{commentDate}</p>
-                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
-                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                            <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
+                            <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
+                            {selectedComment === 'Other' && (
+                            <div>
+                                <textarea 
+                                    className = 'showOther'
+                                    placeholder="Please specify..." 
+                                    value={otherComment} 
+                                    onChange={(e) => setOtherComment(e.target.value)} 
+                                />
+                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
+                            </div>
+                        )}
+                        {selectedComment !== 'Other' && (
+                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
+                        )} 
                         </div>
                     </div>
-
                 </div>
                 <DataTable value={comments} header={commentTableHeader}
                         scrollable scrollHeight="17.48vw"
