@@ -225,6 +225,7 @@ const History = ({reqHistory}) => {
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
                 setSchoolId(data['schoolId']);
+                console.log('SchoolId:', schoolId);
                 setColorType(data['colored']);
                 setNoOfCopies(data['noOfCopies']);
                 setBindType(data['bindType']);
