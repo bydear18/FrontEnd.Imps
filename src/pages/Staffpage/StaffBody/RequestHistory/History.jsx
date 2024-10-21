@@ -410,8 +410,23 @@ const History = ({reqHistory}) => {
                 <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
 
             </div>
-            <p id='additionalInstructions'>{title}</p>
-            <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
+            <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+            <div id="deetCommentBody" className ={commentShow}>
+                <div id='commBod'>
+                    <p>{commentDate}</p>
+                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                </div>
+            </div>
+            <DataTable value={comments} header={commentTableHeader}
+                        scrollable scrollHeight="17.48vw"
+                        emptyMessage="No comments found." id='tableOfComments'
+                        paginator rows={5}
+                        tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
+                        <Column field="sentBy" header="Sent by"></Column>
+                        <Column field="content" header="Content"></Column>
+                        <Column field="sentDate" header="Date"></Column>
+                </DataTable>
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
