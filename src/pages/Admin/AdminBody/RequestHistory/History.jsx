@@ -440,6 +440,8 @@ const Pending = () => {
                             <div id="deetCommentBody" className ={commentShow}>
                                 <div id='commBod'>
                                     <p>{commentDate}</p>
+ 
+                                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
                                 </div>
                             </div>
 
