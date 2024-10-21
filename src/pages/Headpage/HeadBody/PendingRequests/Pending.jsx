@@ -260,14 +260,16 @@ const Pending = () => {
             </div>
         );
     };
+
     const renderCommentHeader = () => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
-                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
+                
             </div>
         );
     };
+
 
     const header = renderHeader();
     const commentTableHeader = renderCommentHeader();
@@ -515,7 +517,13 @@ const Pending = () => {
                         </div>
                     </div>
                     <div id="overlay" className = {commentShow} onClick={closeComment}></div>
-
+                    <div id="deetCommentBody" className ={commentShow}>
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                        </div>
+                    </div>
 
                 </div>
                 <DataTable value={comments} header={commentTableHeader}
