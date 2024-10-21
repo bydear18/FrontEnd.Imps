@@ -102,7 +102,7 @@ return (
         <div className="box">
           <div className="content-box">
             <FaCheckCircle style={{ color: '#4a90e2' }} className="icon" />
-            <p className="box-text">In Progress</p>
+            <p className="box-text">Approved for Printing</p>
           </div>
           <div className="extra-box">
             <p className="count">
@@ -110,10 +110,23 @@ return (
             </p>
           </div>
         </div>
+
+        <div className="box">
+          <div className="content-box">
+            <FaCheckCircle style={{ color: '#db7c2e;' }} className="icon" />
+            <p className="box-text">Waiting for Approval</p>
+          </div>
+          <div className="extra-box">
+            <p className="count">
+              {statistics.inProgressRequests + statistics.pendingRequests}
+            </p>
+          </div>
+        </div>
+      
         <div className="box">
           <div className="content-box">
             <FaCheckCircle style={{ color: '#08af5c' }} className="icon" />
-            <p className="box-text">Approved Requests</p>
+            <p className="box-text">Completed Requests</p>
           </div>
           <div className="extra-box">
             <p className="count">{statistics.completedRequests}</p>
