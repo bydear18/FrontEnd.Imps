@@ -407,9 +407,6 @@ const History = ({reqHistory}) => {
                 </div>
 {/*                             
                             <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a> */}
-
-                            <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
-                            <textarea id='instruction' disabled='true' value={content}></textarea>
                             <DataTable value={comments} header={commentTableHeader}
                                     scrollable scrollHeight="17.48vw"
                                     emptyMessage="No comments found." id='tableOfComments'
