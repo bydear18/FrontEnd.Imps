@@ -457,6 +457,15 @@ const Pending = () => {
                 </div>
                 <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
                 <textarea id='instruction' disabled='true' value={content}></textarea>
+                <DataTable value={comments} header={commentTableHeader}
+                        scrollable scrollHeight="17.48vw"
+                        emptyMessage="No comments found." id='tableOfComments'
+                        paginator rows={5}
+                        tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
+                        <Column field="sentBy" header="Sent by"></Column>
+                        <Column field="content" header="Content"></Column>
+                        <Column field="sentDate" header="Date"></Column>
+                </DataTable>
                 <div id='columnizer'>
                     <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
                     <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>

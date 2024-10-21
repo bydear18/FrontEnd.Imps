@@ -5,7 +5,13 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
 }
 
-
+#tableOfComments{
+    margin-top: -15vw;
+    float: right;
+    width: 40%;
+    margin-right: 100px;
+    font-size: 12px;
+}
 #typeReq {
     position:absolute;
     width:7vw;

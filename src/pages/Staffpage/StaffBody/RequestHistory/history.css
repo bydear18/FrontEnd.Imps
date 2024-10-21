@@ -24,6 +24,14 @@
     transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 
+#tableOfComments{
+    margin-top: -15vw;
+    float: right;
+    width: 40%;
+    margin-right: 100px;
+    font-size: 12px;
+}
+
 #markComplete:hover {
         border-style: solid;
         border-width: 0.1vw;

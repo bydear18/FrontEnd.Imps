@@ -180,7 +180,6 @@ const UserManagement = () => {
       );
     }
 
-
   };
   const closeButton = ()=>{
     setIsModalOpen(false);
