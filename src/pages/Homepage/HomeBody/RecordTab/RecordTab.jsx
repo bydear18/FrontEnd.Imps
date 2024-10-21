@@ -346,7 +346,7 @@ const RecordTab = () => {
                 <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
                     filters={filters} emptyMessage="No records found."
                     paginator rows={8}
-                    tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
+                    tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRecordSelect}>
                     <Column field="userID" header="User ID"></Column>
                     <Column field="requestID" header="Request ID"sortable></Column>
                     <Column field="fileType" header="File Type"sortable></Column>
