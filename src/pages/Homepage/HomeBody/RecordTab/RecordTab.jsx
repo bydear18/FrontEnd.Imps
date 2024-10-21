@@ -24,11 +24,12 @@ const RecordTab = () => {
     const userEmail = localStorage.getItem("email");
     const [id, setID] = useState('');
     const [requestID, setRequestID] = useState();
+
     const [show, setShow] = useState('hide');
     const [commentShow, setCommentShow] = useState('hide');
     const [statusClass, setStatusClass] = useState('reqStatRejected');
     const [buttonShow, setButtonShow] = useState('hide');
-
+    const [role, setRole] = useState('');
     // Detail Values
     const [bindType, setBindType] = useState('');
     const [department, setDepartment] = useState('');
@@ -47,17 +48,36 @@ const RecordTab = () => {
     const [status, setStatus] = useState('');
     const [userID, setUserID] = useState('');
 
-    const schoolId = localStorage.getItem("schoolId");
-    const email = localStorage.getItem("email");
-    const firstName = localStorage.getItem("firstName");
-    const lastName = localStorage.getItem("lastName");
-
-
+    const [schoolId, setSchoolId] = useState('');
+    const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [commentDate, setCommentDate] = useState('');
     const [editable, setEditable] = useState(true);
+
+
+    const [error, setError] = useState(null);
+    const [alert, setAlert] = useState('hide');
+
+
+    const [commentOptions, setCommentOptions] = useState([
+        { label: 'Insufficient Information', value: 'Insufficient Information' },
+        { label: 'Invalid Request', value: 'Invalid Request' },
+        { label: 'Other', value: 'Other' },
+    ]);
+    const [selectedComment, setSelectedComment] = useState(null);
+    const [otherComment, setOtherComment] = useState('');
+    
+    const [content, setContent] = useState([]);
+    const [requesterName, setRequesterName] = useState('');
+    const [requesterEmail, setRequesterEmail] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [downloadURL, setDownloadURL] = useState('');
+    const [success, setSuccess] = useState(false);
+
 
     const getDate = () => {
         const today = new Date();
@@ -151,7 +171,8 @@ const RecordTab = () => {
                 setPaperSize(data['paperSize']);
                 setEmail(data['requesterEmail']);
                 setRole(data['role']);
-                
+                setFirstName(data['firstName']);
+                setLastName(data['lastName']);
                 console.log(data['schoolId']);
                 setUserID(data['userID']);
                 setRequesterEmail(data['requesterEmail']);
@@ -380,27 +401,14 @@ const RecordTab = () => {
                     <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                     <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
-
+                    
+                    
                     <div id="overlay" className = {commentShow} onClick={closeComment}></div>
                     <div id="deetCommentBody" className ={commentShow}>
-                    <div id='commBod'>
-                        <p>{commentDate}</p>
-                            <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
-                            <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
-                            {selectedComment === 'Other' && (
-                            <div>
-                                <textarea 
-                                    className = 'showOther'
-                                    placeholder="Please specify..." 
-                                    value={otherComment} 
-                                    onChange={(e) => setOtherComment(e.target.value)} 
-                                />
-                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
-                            </div>
-                        )}
-                        {selectedComment !== 'Other' && (
-                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
-                        )} 
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                         </div>
                     </div>
 
