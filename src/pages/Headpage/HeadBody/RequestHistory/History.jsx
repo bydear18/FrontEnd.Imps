@@ -367,14 +367,19 @@ const Pending = () => {
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'info';
-
-            case 'New Request':
-                return 'info';
-
-            case 'Pending':
                 return 'warning';
 
+            case 'Rejected':
+                return 'danger';
+
+            case 'Approved for Printing':
+                return 'info';
+
+            case 'Ready to Claim':
+                return 'success';
+
+            case 'Claimed':
+                return 'success';
             case '':
                 return null;
         }
