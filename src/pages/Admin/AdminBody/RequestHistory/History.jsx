@@ -18,6 +18,7 @@ const Pending = () => {
     const [rejectDisable, setRejectDisable] = useState(false);
     const [statusClass, setStatusClass] = useState('reqStatRejected');
     const [values, setValues] = useState([]);
+    const [title, setTitle] = useState('');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -439,9 +440,6 @@ const Pending = () => {
                             <div id="deetCommentBody" className ={commentShow}>
                                 <div id='commBod'>
                                     <p>{commentDate}</p>
- 
-                                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
-                                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                                 </div>
                             </div>
 
