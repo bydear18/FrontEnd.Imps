@@ -19,10 +19,8 @@ const App = () => {
   useEffect(() => {
     const createDefaultUsers = async () => {
       try {
-
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
-
         const response = await axios.post('https://backimps-production.up.railway.app/services/createDefaultUsers', {
           adminEmail: adminEmail,
           headEmail: headEmail
