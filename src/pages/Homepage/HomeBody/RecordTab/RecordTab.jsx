@@ -28,6 +28,8 @@ const History = ({reqHistory}) => {
     const [commentShow, setCommentShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
     const [statusClass, setStatusClass] = useState('reqStatRejected');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
     // Details
     const [selectedComment, setSelectedComment] = useState(null);
@@ -216,7 +218,6 @@ const History = ({reqHistory}) => {
                 setDepartment(data['department']);
                 setFileType(data['fileType']);
                 setColored(data['color']);
-                setToStaple(data['stapled']);
                 setGiveExam(data['giveExam']);
                 setDesc(data['description']);
                 setRequestDate(data['requestDate']);
@@ -226,6 +227,8 @@ const History = ({reqHistory}) => {
                 setColorType(data['colored']);
                 setNoOfCopies(data['noOfCopies']);
                 setBindType(data['bindType']);
+                setFirstName(data['firstName']);
+                setLastName(data['lastName']);
                 setPaperSize(data['paperSize']);
                 setPaperType(data['paperType']);
                 setUserID(data['userID']);
