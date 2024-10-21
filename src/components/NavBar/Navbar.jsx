@@ -45,7 +45,6 @@ const Navbar = () => {
     }
 
 
-    // Fetch notifications and admin check
     useEffect(() => {
         const userID = localStorage.getItem("userID");
         const email = localStorage.getItem("email");
@@ -56,11 +55,9 @@ const Navbar = () => {
                 .then(response => response.json())
                 .then(() => {
                     setNotifShow('show');
-                    
                     if(role === 'employee'){
-                        setRole(accType)
+                        setRole(accType);
                     }
-
                     return fetch(`https://backimps-production.up.railway.app/notifications/id?id=${userID}`, { method: 'GET', mode: 'cors', headers: { 'Content-Type': 'application/json' } });
                 })
                 .then(response => response.json())
