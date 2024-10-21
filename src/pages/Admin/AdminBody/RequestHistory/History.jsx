@@ -451,7 +451,7 @@ const Pending = () => {
 
                     <div id='fourthLine'>
                         <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
-                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}>No. of Copies: <p className='specText'>{noOfCopies}</p>
                             </div>
                         </p>
                     </div>
