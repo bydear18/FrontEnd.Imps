@@ -107,7 +107,8 @@ const History = ({reqHistory}) => {
                     mode: 'cors',
                     body: commentData
                   };
-                fetch("https://backimps-production.up.railway.app/comments/newAdminComment", requestOptionsComment).then((response)=> response.json()
+                fetch("https://backimps-production.up.railway.app/comments/newComments", requestOptionsComment)
+                .then((response)=> response.json()
                                         ).then((data) => {
                                             fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
                                             ).then((data) => { 
@@ -391,24 +392,24 @@ const History = ({reqHistory}) => {
                     </div>
 
                 </div>
-                            
-                            <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a>
+{/*                             
+                            <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a> */}
 
-
+                            <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
+                            <textarea id='instruction' disabled='true' value={content}></textarea>
                             <DataTable value={comments} header={commentTableHeader}
                                     scrollable scrollHeight="17.48vw"
                                     emptyMessage="No comments found." id='tableOfComments'
                                     paginator rows={5}
                                     tableStyle={{ minWidth: '5vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
                                     <Column field="sentBy" header="Sent by"></Column>
-                                    <Column field="header" header="Header"></Column>
                                     <Column field="content" header="Content"></Column>
                                     <Column field="sentDate" header="Date"></Column>
                             </DataTable>
-
+{/* 
                             <div id='columnizer'>
                             <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>Mark as Complete</button>
-                            </div>
+                            </div> */}
                 </div>
         </div>
     );
