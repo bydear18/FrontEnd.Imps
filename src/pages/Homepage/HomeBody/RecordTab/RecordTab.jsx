@@ -124,7 +124,7 @@ const RecordTab = () => {
     };
 
     const header = renderHeader();
-    const commentTableHeader = renderCommentTableHeader();
+    const commentTableHeader = renderCommentHeader();
 
     const onCommentSelect = (event) => {
         setCommentDate(event.data.sentDate);
