@@ -1,36 +1,39 @@
-import './history.css';
-
-import React, {
-    useEffect,
-    useState,
-} from 'react';
-
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
+import { Dropdown } from 'primereact/dropdown';
+import React, { useEffect, useState } from 'react';
+import './headpending.css';
 
-const History = ({reqHistory}) => {
-    const [values, setValues] = useState(reqHistory);
+const Pending = () => {
+    const [error, setError] = useState(null);
+    const [alert, setAlert] = useState('hide');
     const [rejected,setRejected] = useState('hide');
-    const [disabled,setDisabled] = useState(false);
-    const [completeDisable, setCompleteDisable] = useState(false);
-    const [commentDisabled, setCommentDisabled] = useState('hide');
+    const [alertMsg, setAlertMsg] = useState('');
+    const [show, setShow] = useState('hide');
+    const [buttonShow, setButtonShow] = useState('hide');
+    const [commentShow, setCommentShow] = useState('hide');
+    const [rejectDisable, setRejectDisable] = useState(false);
+    const [statusClass, setStatusClass] = useState('reqStatRejected');
+    const [values, setValues] = useState([]);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS }});
-    const [otherComment, setOtherComment] = useState('');
-    const [show, setShow] = useState('hide');
-    const [commentShow, setCommentShow] = useState('hide');
-    const [buttonShow, setButtonShow] = useState('hide');
-    const [statusClass, setStatusClass] = useState('reqStatRejected');
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    });
+    const [commentDisabled, setCommentDisabled] = useState('hide');
 
-    // Details
+    const [commentOptions, setCommentOptions] = useState([
+        { label: 'Insufficient Information', value: 'Insufficient Information' },
+        { label: 'Invalid Request', value: 'Invalid Request' },
+        { label: 'Other', value: 'Other' },
+    ]);
     const [selectedComment, setSelectedComment] = useState(null);
+    const [otherComment, setOtherComment] = useState('');
+    
     const [requestID, setRequestID] = useState();
     const [department, setDepartment] = useState('');
     const [email, setEmail] = useState('');
@@ -42,7 +45,6 @@ const History = ({reqHistory}) => {
     const [colored, setColored] = useState(false);
     const [useDate, setUseDate] = useState('');
     const [requestDate, setRequestDate] = useState('');
-    const [title, setTitle] = useState('');
     const [paperSize, setPaperSize] = useState('');
     const [colorType, setColorType] = useState('');
     const [paperType, setPaperType] = useState('');
@@ -55,37 +57,102 @@ const History = ({reqHistory}) => {
     const [requesterName, setRequesterName] = useState('');
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-
+    const [downloadURL, setDownloadURL] = useState('');
+    const [success, setSuccess] = useState(false);
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [commentDate, setCommentDate] = useState('');
+    
     const [editable, setEditable] = useState(true);
-
-    const [downloadURL, setDownloadURL] = useState('');
 
     const getDate = () => {
         const today = new Date();
-        return today.toISOString().substring(0,10);
-    }
+        return today.toISOString().substring(0, 10);
+    };
+    const [infoPopUpVisible, setInfoPopUpVisible] = useState(false);
+    const [infoMessage, setInfoMessage] = useState('');
     
+    const handleCommentChange = (event) => {
+        const value = event.value;
+        setSelectedComment(value);
+
+        if (value === 'Other') {
+            setCommentShow('show'); 
+        } else {
+            setCommentShow('hide'); 
+            setOtherComment(''); 
+        }
+    };
+    const createComment = () => {
+        const commentData = new FormData();
+        commentData.append("sentBy", "Head");
+        commentData.append("header", commentHeader);
+        commentData.append("content", commentContent);
+        commentData.append("sentDate", commentDate);
+        commentData.append("requestID", requestID);
+        
+        const requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            };
+            if(commentContent!=null && commentContent!==''){
+                const requestOptionsComment = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: commentData
+                  };
+                fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
+                .then((response)=> response.json()
+                                        ).then((data) => {
+                                            fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
+                                            ).then((data) => { 
+                                                setComments(data);
+                                                setEditable(true);
+                                                setButtonShow('hide');
+                                                setCommentShow('hide');
+                                            })
+                                            .catch(error =>
+                                            {
+                                                console.log(error);
+                                            }
+                                            );
+                                        })
+                                        .catch(error =>
+                                        {
+                                            console.log(error);
+                                        }
+                                    );
+                }
+
+    }
+
+    const showInfoPop = (message, isSuccess = false) => {
+        setAlert('show');
+        setAlertMsg(message);
+        setSuccess(isSuccess);
+      };
+
+
+      const closeInfoPop = () => {
+        setAlert('hide');
+      };
+
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
-    
+
     const onGlobalFilterChange = (e) => {
         const value = e.target.value;
         let _filters = { ...filters };
-    
-         _filters['global'].value = value;
-    
+
+        _filters['global'].value = value;
+
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-    const [commentOptions, setCommentOptions] = useState([
-        { label: 'Insufficient Information', value: 'Insufficient Information' },
-        { label: 'Invalid Request', value: 'Invalid Request' },
-        { label: 'Other', value: 'Other' },
-    ]);
     const handleAddComment = () => {
         setCommentDate(currentDate);
         setCommentHeader('');
@@ -95,31 +162,97 @@ const History = ({reqHistory}) => {
         setCommentShow('show');
     }
 
-    const handleComplete = () => {
-        setCompleteDisable(true);
+    const handleAccept = () => {
         const requestOptions = {
             method: 'POST',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
-            };
-            fetch("https://backimps-production.up.railway.app/records/completedStatus?requestID=" + requestID + "&role=" + role + "&status=Completed&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
-            ).then((data) => {window.location.reload();})
-            .catch(error =>
-                {
-                    console.log(error);
-                    
-                }
-            );
-
-            setCompleteDisable(false);
-    }
+        };
+        fetch(
+            "https://backimps-production.up.railway.app/records/acceptedStatus?requestID=" + requestID + 
+            "&status=In Progress&email=" + email + 
+            "&userID=" + userID + 
+            "&date=" + currentDate + 
+            "&schoolId=" + schoolId + 
+            "&role=" + role,
+            requestOptions
+        )
+        .then((response) => response.json())
+        .then((data) => {
+            showInfoPop('Request Accepted.');
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000); 
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    };
     
+
+    const handleReject = () => {
+        setCommentDate(currentDate);
+        setCommentHeader("Reason for Rejection");
+        setRejectDisable(false);
+        setEditable(false);
+        setCommentContent('');
+        setButtonShow('show');
+        setCommentShow('show');
+    };
+
+    const proceedReject = (selectedComment) => {
+        setRejectDisable(true);
+        const commentData = new FormData();
+        commentData.append("sentBy", "Head");
+        commentData.append("header", commentHeader);
+        commentData.append("content", selectedComment);
+        commentData.append("sentDate", commentDate);
+        commentData.append("requestID", requestID);
+        
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        if (selectedComment != null && selectedComment !== '') {
+            const requestOptionsComment = {
+                method: 'POST',
+                mode: 'cors',
+                body: commentData
+            };
+            fetch("https://backimps-production.up.railway.app/comments/newComment", requestOptionsComment)
+            .then((response) => response.json())
+            .then((data) => {
+                fetch("https://backimps-production.up.railway.app/records/rejectedStatus?requestID=" + requestID + "&status=Rejected&email=" + email + "&userID=" + userID + "&date=" + currentDate + "&role=" + role, requestOptions)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        showInfoPop(`Request Rejected!`, true);
+                        setTimeout(() => {
+                            setInfoPopUpVisible(false); 
+                            setEditable(true);
+                            setButtonShow('hide');
+                            setCommentShow('hide');
+                            window.location.reload();
+                        }, 3000);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    };
+
     const renderHeader = () => {
         return (
             <div id="historyHeader" className="flex">
-                <h1>Request History</h1>
+                <h1>Pending Requests</h1>
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search" />
@@ -132,10 +265,11 @@ const History = ({reqHistory}) => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
-                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
+                
             </div>
         );
     };
+
 
     const header = renderHeader();
     const commentTableHeader = renderCommentHeader();
@@ -145,135 +279,121 @@ const History = ({reqHistory}) => {
         setCommentHeader(event.data.header);
         setCommentContent(event.data.content);
         setCommentShow('show');
-    }
+    };
 
     const onRowSelect = (event) => {
         const requestOptions = {
             method: 'GET',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
-          },
-          };
+                'Content-Type': 'application/json',
+            },
+        };
 
-          fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions).then((response)=> response.json()
-            ).then((data) => { 
+        fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
                 setFileName(data['fileName']);
-                setDepartment(data['department']);
                 setFileType(data['fileType']);
+                setDepartment(data['department']);
+                setPaperType(data['paperType']);
                 setColored(data['color']);
+                setColorType(data['colored']);
                 setGiveExam(data['giveExam']);
+                setSchoolId(data['schoolId']);
                 setDesc(data['description']);
                 setRequestDate(data['requestDate']);
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
                 setNoOfCopies(data['noOfCopies']);
-                setColorType(data['colored']);
                 setPaperSize(data['paperSize']);
-                setUserID(data['userID']);
-                setSchoolId(data['schoolId']);
                 setEmail(data['requesterEmail']);
-                setDownloadURL(data['downloadURL']);
+                setRole(data['role']);
+                
+                console.log(data['schoolId']);
+                setUserID(data['userID']);
                 setRequesterEmail(data['requesterEmail']);
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
-                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
-                ).then((data) => { 
-                    setStatus(data['status']);
-                    if(data['status'] === 'Rejected'){
-                        setRejected('show');
-                        setCommentDisabled('hide');
-                    }else if (data['status'] === 'Completed'){
-                        setRejected('hide');
-                    }else{
-                        setRejected('show');
-                        setCommentDisabled('show');
-                    }
+                setDownloadURL(data['downloadURL']);
 
-                    if (data['status'] === 'Rejected') {
-                        setStatus('Rejected');
-                        setStatusClass('capsuleRejected');
-                    } else if (data['status'] === 'Pending') {
-                        setStatus('Waiting for Approval');
-                        setStatusClass('capsulePending');
-                    } else if (data['status'] === 'In Progress') {
-                        setStatus('Approved for Printing');
-                        setStatusClass('capsuleProgress');
-                    } else if (data['status'] === 'Completed') {
-                        setStatus('Ready to Claim');
-                        setStatusClass('capsuleCompleted');
-                    }
-                    fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
-                    ).then((data) => { 
-                        setComments(data);
-                        if(data[0].sentBy == 'Head'){
-                            setTitle('REASON FOR REJECTION');
-                            setContent(data[0].content);
-                            console.log(data[0].content);
-                            
-                        } else{
-                            setTitle('ADDITIONAL INSTRUCTION');
-                            setContent(data[0].content);
+
+                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setStatus(data['status']);
+                        if(data['status'] === 'Rejected'){
+                            setRejected('show');
+                            setCommentDisabled('hide');
+                        }else if (data['status'] === 'Completed'){
+                            setRejected('hide');
+                        }else{
+                            setRejected('show');
+                            setCommentDisabled('show');
                         }
+                        if (data['status'] === 'Rejected') {
+                            setStatus('Rejected');
+                            setStatusClass('capsuleRejected');
+                        } else if (data['status'] === 'Pending') {
+                            setStatus('Waiting for Approval');
+                            setStatusClass('capsulePending');
+                        } else if (data['status'] === 'In Progress') {
+                            setStatus('Approved for Printing');
+                            setStatusClass('capsuleProgress');
+                        } else if (data['status'] === 'Completed') {
+                            setStatus('Ready to Claim');
+                            setStatusClass('capsuleCompleted');
+                        }
+                        fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions)
+                            .then((response) => response.json())
+                            .then((data) => {
+                                setComments(data);
+                                setContent(data[0].content);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
                     })
-                    .catch(error =>
-                    {
+                    .catch((error) => {
                         console.log(error);
-                    }
-                    );
-
-                })
-                .catch(error =>
-                {
-                    console.log(error);
-                }
-                );
-
+                    });
             })
-            .catch(error =>
-            {
+            .catch((error) => {
                 console.log(error);
-            }
-            );
+            });
         setShow('show');
     };
-
-    
-
-    const closeComment = () => {
-        setCommentShow('hide');
-        setButtonShow('hide');
-    }
-
-    const closeModal = () => {
-        setShow('hide');
-    }
 
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'warning';
-
-            case 'Rejected':
-                return 'danger';
-
-            case 'Approved for Printing':
                 return 'info';
 
-            case 'Ready to Claim':
-                return 'success';
+            case 'New Request':
+                return 'info';
 
-            case 'Claimed':
-                return 'success';
+            case 'Pending':
+                return 'warning';
+
             case '':
                 return null;
         }
     };
 
+    const closeComment = () => {
+        setCommentDate('');
+        setCommentHeader('');
+        setCommentContent('');
+        setCommentShow('hide');
+    };
+
+    const closeModal = () => {
+        setShow('hide');
+    };
+
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
-
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
@@ -304,8 +424,8 @@ const History = ({reqHistory}) => {
                 console.log(error);
             });
     }, []);
-
-    return(
+    
+    return (
         <div>
             <div id="pendingTable">
                 <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
@@ -322,7 +442,7 @@ const History = ({reqHistory}) => {
                 </DataTable>
             </div>
             <div id="overlay" className={show} onClick={closeModal}></div>
-            <div id="requestBox" className={show}>
+            <div id="requestBox" className ={show}>
                 <div id='boxDeets'>
 
                     <div id='firstLine'>
@@ -367,10 +487,10 @@ const History = ({reqHistory}) => {
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                     <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
 
-                    <div id="overlay" className={commentShow} onClick={closeComment}></div>
-                    <div id="deetCommentBody" className={commentShow}>
-                        <div id='commBod'>
-                            <p>{commentDate}</p>
+                    <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className ={commentShow}>
+                    <div id='commBod'>
+                        <p>{commentDate}</p>
                             <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
                             <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
                             {selectedComment === 'Other' && (
@@ -381,14 +501,16 @@ const History = ({reqHistory}) => {
                                     value={otherComment} 
                                     onChange={(e) => setOtherComment(e.target.value)} 
                                 />
+                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
                             </div>
                         )}
+                        {selectedComment !== 'Other' && (
+                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
+                        )} 
                         </div>
                     </div>
 
                 </div>
-                <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
-                <textarea id='instruction' disabled='true' value={content}></textarea>
                 <DataTable value={comments} header={commentTableHeader}
                         scrollable scrollHeight="17.48vw"
                         emptyMessage="No comments found." id='tableOfComments'
@@ -398,10 +520,15 @@ const History = ({reqHistory}) => {
                         <Column field="content" header="Content"></Column>
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
-
-            </div>
+                
+                <div id='columnizer'>
+                    <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
+                    <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
+                    <button id='approved' className='pendButtons' onClick={handleAccept}>Accept</button>
+                </div>
+                </div>
         </div>
     );
 };
 
-export default History;
+export default Pending;
