@@ -7,7 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import React, { useEffect, useState } from 'react';
-import './headpending.css';
+import './history.css';
 
 const Pending = () => {
     const [error, setError] = useState(null);
@@ -394,7 +394,7 @@ const Pending = () => {
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
-    
+
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
