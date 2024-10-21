@@ -39,6 +39,7 @@ const History = ({reqHistory}) => {
     const [noOfCopies,setNoOfCopies] = useState(0);
     const [toStaple, setToStaple] = useState(false);
     const [colored, setColored] = useState(false);
+    const [colorType, setColorType] = useState('');
     const [useDate, setUseDate] = useState('');
     const [requestDate, setRequestDate] = useState('');
     const [paperSize, setPaperSize] = useState('');
@@ -49,13 +50,13 @@ const History = ({reqHistory}) => {
     const [requesterName, setRequesterName] = useState('');
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-
+    const [paperType, setPaperType] = useState('');
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [commentDate, setCommentDate] = useState('');
     const [editable, setEditable] = useState(true);
-
+    const [schoolId, setSchoolId]= useState('');
     const [downloadURL, setDownloadURL] = useState('');
 
     const getDate = () => {
@@ -203,9 +204,12 @@ const History = ({reqHistory}) => {
                 setRequestDate(data['requestDate']);
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
+                setSchoolId(data['schoolId']);
+                setColorType(data['colored']);
                 setNoOfCopies(data['noOfCopies']);
                 setBindType(data['bindType']);
                 setPaperSize(data['paperSize']);
+                setPaperType(data['paperType']);
                 setUserID(data['userID']);
                 setEmail(data['requesterEmail']);
                 setDownloadURL(data['downloadURL']);
