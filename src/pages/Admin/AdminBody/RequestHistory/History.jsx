@@ -28,7 +28,7 @@ const History = ({reqHistory}) => {
     const [commentShow, setCommentShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
     const [statusClass, setStatusClass] = useState('reqStatRejected');
-
+    const [title, setTitle] = useState('');
     // Details
     const [requestID, setRequestID] = useState();
     const [bindType, setBindType] = useState('');
