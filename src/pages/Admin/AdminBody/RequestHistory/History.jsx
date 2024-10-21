@@ -401,7 +401,6 @@ const History = ({reqHistory}) => {
                     <div id="deetCommentBody" className ={commentShow}>
                         <div id='commBod'>
                             <p>{commentDate}</p>
-                            <input type='text' value={commentHeader} disabled={editable} id='commHead' placeholder="Enter comment header..." onChange={(e)=>{setCommentHeader(e.target.value)}}/>
                             <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
                             <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                         </div>
