@@ -293,21 +293,24 @@ const History = ({reqHistory}) => {
     const getSeverity = (status) => {
         switch (status) {
             default:
-                return 'info';
+                return 'warning';
 
             case 'Rejected':
                 return 'danger';
 
-            case 'In Progress':
+            case 'Approved for Printing':
                 return 'info';
 
-            case 'Completed':
+            case 'Ready to Claim':
                 return 'success';
 
+            case 'Claimed':
+                return 'success';
             case '':
                 return null;
         }
     };
+
 
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
