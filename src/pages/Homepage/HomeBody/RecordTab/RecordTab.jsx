@@ -334,8 +334,6 @@ const History = ({reqHistory}) => {
             },
         };
     
-        const currentUserID = localStorage.getItem("userID"); // Get the userID from localStorage
-        
         fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
@@ -344,16 +342,13 @@ const History = ({reqHistory}) => {
                     'In Progress': 'Approved for Printing',
                     'Completed': 'Ready to Claim',
                 };
+
+                const updatedData = data.map(item => ({
+                    ...item,
+                    status: statusMap[item.status] || item.status, 
+                }));
     
-                // Map and filter the data by userID
-                const updatedData = data
-                    .filter(item => item.userID === currentUserID) // Filter records by userID
-                    .map(item => ({
-                        ...item,
-                        status: statusMap[item.status] || item.status, 
-                    }));
-    
-                setValues(updatedData); // Set the filtered and updated data
+                setValues(updatedData);
                 console.log(updatedData);
             })
             .catch((error) => {
