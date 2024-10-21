@@ -431,28 +431,17 @@ const History = ({reqHistory}) => {
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                     <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
 
-                    <div id="overlay" className={commentShow} onClick={closeComment}></div>
-                    <div id="deetCommentBody" className={commentShow}>
+
+                    <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className ={commentShow}>
                         <div id='commBod'>
                             <p>{commentDate}</p>
-                            <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
-                            <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
-                            {selectedComment === 'Other' && (
-                            <div>
-                                <textarea 
-                                    className = 'showOther'
-                                    placeholder="Please specify..." 
-                                    value={otherComment} 
-                                    onChange={(e) => setOtherComment(e.target.value)} 
-                                />
-                            </div>
-                        )}
+                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                         </div>
                     </div>
 
                 </div>
-                <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
-                <textarea id='instruction' disabled='true' value={content}></textarea>
                 <DataTable value={comments} header={commentTableHeader}
                         scrollable scrollHeight="17.48vw"
                         emptyMessage="No comments found." id='tableOfComments'
