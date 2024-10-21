@@ -26,6 +26,7 @@ const Navbar = () => {
     const [infoStep, setInfoStep] = useState(0);
     const [disabled, setDisabled] = useState(true);
     const [firstName, setFirstName] = useState(localStorage.getItem("firstName"));
+    const [role, setRole] = useState(localStorage.getItem("role"));
     const [lastName, setLastName] = useState(localStorage.getItem("lastName"));
     const [email, setEmail] = useState(localStorage.getItem("email"));
     const [schoolId, setSchoolId] = useState(localStorage.getItem("schoolId"));
@@ -175,7 +176,7 @@ const Navbar = () => {
                             <div id='accDivider'></div>
                             <img src={Miming} id='accIcon' />
                             <div className='accName'>{lastName}, {firstName}</div>
-                            <div className='accType'>Staff</div>
+                            <div className='accType'>{role}</div>
                             <div id='inputContainer'>
                                 <p className='inLab uwahiNgan'>Last Name</p>
                                 <FaUser className='accIcon userIcon' />
