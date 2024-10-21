@@ -270,7 +270,7 @@ const statusBodyTemplate = (rowData) => {
         </div>
 
         <div id="pendingTable">
-            <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
+            <DataTable value={values} scrollable scrollHeight="20vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
                 filters={filters} emptyMessage="No records found."
                 paginator rows={8}
                 tableStyle={{ minWidth: '20vw' }} selectionMode="single">
