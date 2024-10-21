@@ -93,10 +93,6 @@ const History = ({reqHistory}) => {
 
     const fileUrl = downloadURL; 
 
-    document.getElementById('downloadButton').addEventListener('click', () => {
-        downloadFile(fileUrl);
-    });
-
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
@@ -491,7 +487,7 @@ const History = ({reqHistory}) => {
 
                     <div id='columnizer'>
                         {status !== 'Rejected' && (
-                            <a id='downloadButton' onClick={downloadFile}>
+                            <a id='pendingGetRequest' onClick={downloadFile}>
                                 Get Request File
                             </a>
                         )}
