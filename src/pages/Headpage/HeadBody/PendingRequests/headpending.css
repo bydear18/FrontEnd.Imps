@@ -66,19 +66,19 @@
 #additionalInstructions{
     float: right;
     margin-right: 20vw;
-    margin-top: -23vw;
+    margin-top: -26vw;
     font-weight: bold;
 }
 
 #instruction{
     float: right;
     margin-right: 5.5vw;
-    margin-top: -20.5vw;
+    margin-top: -24.5vw;
     font-size: 0.8vw;
     color: black;
     resize: none;
     width: 25.2vw;
-    height: 10vw !important;
+    height: 7vw !important;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 #overlay{
