@@ -334,6 +334,51 @@ const Pending = () => {
         setCommentShow('hide');
     };
 
+    const createComment = () => {
+        const commentData = new FormData();
+        commentData.append("sentBy", "Admin");
+        commentData.append("header", commentHeader);
+        commentData.append("content", commentContent);
+        commentData.append("sentDate", commentDate);
+        commentData.append("requestID", requestID);
+        
+        const requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            };
+            if(commentContent!=null && commentContent!==''){
+                const requestOptionsComment = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: commentData
+                  };
+                fetch("https://backimps-production.up.railway.app/comments/newAdminComment", requestOptionsComment).then((response)=> response.json()
+                                        ).then((data) => {
+                                            fetch("https://backimps-production.up.railway.app/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
+                                            ).then((data) => { 
+                                                setComments(data);
+                                                setEditable(true);
+                                                setButtonShow('hide');
+                                                setCommentShow('hide');
+                                            })
+                                            .catch(error =>
+                                            {
+                                                console.log(error);
+                                            }
+                                            );
+                                        })
+                                        .catch(error =>
+                                        {
+                                            console.log(error);
+                                        }
+                                    );
+                }
+
+    }
+
     const closeModal = () => {
         setShow('hide');
     };
@@ -423,7 +468,7 @@ const Pending = () => {
 
                     </div>
                             
-                  
+                            <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
                             <p id='additionalInstructions'>{title}</p>
                             <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
                             <DataTable value={comments} header={commentTableHeader}
@@ -442,6 +487,7 @@ const Pending = () => {
                                     <p>{commentDate}</p>
  
                                     <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                                 </div>
                             </div>
 
