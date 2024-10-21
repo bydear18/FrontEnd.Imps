@@ -106,7 +106,7 @@ return (
           </div>
           <div className="extra-box">
             <p className="count">
-              {statistics.inProgressRequests + statistics.pendingRequests}
+              {statistics.inProgressRequests}
             </p>
           </div>
         </div>
@@ -118,7 +118,7 @@ return (
           </div>
           <div className="extra-box">
             <p className="count">
-              {statistics.inProgressRequests + statistics.pendingRequests}
+              { statistics.pendingRequests}
             </p>
           </div>
         </div>
