@@ -333,7 +333,7 @@ const History = ({reqHistory}) => {
                 'Content-Type': 'application/json',
             },
         };
-        console.log(userEmail);
+        
         fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
@@ -343,19 +343,19 @@ const History = ({reqHistory}) => {
                     'Completed': 'Ready to Claim',
                 };
 
-                console.log(data);
                 const updatedData = data.map(item => ({
                     ...item,
-                    status: statusMap[item.status] || item.status, 
+                    status: statusMap[item.status] || item.status,
                 }));
-    
-                setValues(updatedData);
-                console.log(updatedData);
+                
+                // Filter data by schoolId if it's set
+                const filteredData = updatedData.filter(item => item.userID === schoolId);
+                setValues(filteredData);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }, [schoolId]);
     
 
     return(
