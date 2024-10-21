@@ -30,6 +30,7 @@ const History = ({reqHistory}) => {
     const [statusClass, setStatusClass] = useState('reqStatRejected');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const userEmail = localStorage.getItem("email");
 
     // Details
     const [selectedComment, setSelectedComment] = useState(null);
@@ -333,9 +334,9 @@ const History = ({reqHistory}) => {
           },
           };
 
-        fetch("http://localhost:8080/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
+        fetch("https://backimps-production.up.railway.app/services/getid?email=" + userEmail, requestOptions).then((response)=> response.json()
         ).then((data) => {
-            fetch("http://localhost:8080/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
+            fetch("https://backimps-production.up.railway.app/records/id?id=" + data['userID'], requestOptions).then((response)=> response.json()
             ).then((data) => { setValues(data);})
             .catch(error =>
             {
