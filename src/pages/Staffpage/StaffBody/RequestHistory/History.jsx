@@ -227,15 +227,6 @@ const History = ({reqHistory}) => {
                 fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
-                    if(data['status'] === 'Rejected'){
-                        setRejected('show');
-                        setCommentDisabled('hide');
-                    }else if (data['status'] === 'Completed'){
-                        setRejected('hide');
-                    }else{
-                        setRejected('show');
-                        setCommentDisabled('show');
-                    }
 
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
@@ -438,6 +429,18 @@ const History = ({reqHistory}) => {
                         <Column field="content" header="Content"></Column>
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
+                <div id='columnizer'>
+                    {status !== 'Rejected' && (
+                        <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
+                            Get Request File
+                        </a>
+                    )}
+                    {status === "Approved for Printing" && (
+                        <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
+                            Mark as Complete
+                        </button>
+                    )}
+                </div>
 
             </div>
         </div>
