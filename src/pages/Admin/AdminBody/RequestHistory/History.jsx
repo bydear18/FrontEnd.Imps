@@ -320,30 +320,28 @@ const History = ({reqHistory}) => {
             method: 'GET',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
-          },
+                'Content-Type': 'application/json',
+            },
         };
     
         fetch("https://backimps-production.up.railway.app/records/all", requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 const statusMap = {
-                    'Rejected': 'Rejected',
                     'Pending': 'Waiting for Approval',
                     'In Progress': 'Approved for Printing',
                     'Completed': 'Ready to Claim',
                 };
-                const updatedData = data
-                    .map(item => ({
-                        ...item,
-                        status: statusMap[item.status] || item.status, 
-                    }))
-                    .filter(record => record.status !== 'Waiting for Approval'); 
+
+                const updatedData = data.map(item => ({
+                    ...item,
+                    status: statusMap[item.status] || item.status, 
+                }));
     
-                // Update state only once
                 setValues(updatedData);
+                console.log(updatedData);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
             });
     }, []);
