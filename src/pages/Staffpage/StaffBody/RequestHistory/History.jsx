@@ -10,6 +10,7 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
+import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 
@@ -30,6 +31,7 @@ const History = ({reqHistory}) => {
 
     // Details
     const [selectedComment, setSelectedComment] = useState(null);
+    const [otherComment, setOtherComment] = useState('');
     const [requestID, setRequestID] = useState();
     const [department, setDepartment] = useState('');
     const [email, setEmail] = useState('');
@@ -81,7 +83,11 @@ const History = ({reqHistory}) => {
 
       };
     
-
+      const [commentOptions, setCommentOptions] = useState([
+        { label: 'Insufficient Information', value: 'Insufficient Information' },
+        { label: 'Invalid Request', value: 'Invalid Request' },
+        { label: 'Other', value: 'Other' },
+    ]);
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
@@ -420,12 +426,9 @@ const History = ({reqHistory}) => {
                             value={otherComment} 
                             onChange={(e) => setOtherComment(e.target.value)} 
                         />
-                        <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
+
                     </div>
                 )}
-                {selectedComment !== 'Other' && (
-                        <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
-                )} 
                 </div>
             </div>
             </div>
