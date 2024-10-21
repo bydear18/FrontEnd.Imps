@@ -232,7 +232,7 @@ const Pending = () => {
             },
         };
 
-        fetch("http://localhost:8080/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions)
+        fetch("https://backimps-production.up.railway.app/requests/id?id=" + event.data.requestID + "&fileName=" + event.data.fileName, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setFileName(data['fileName']);
@@ -257,7 +257,7 @@ const Pending = () => {
                 setRequesterName(data['requesterName']);
                 setContactNumber(data['requesterNumber']);
                 setDownloadURL(data['downloadURL']);
-                fetch("http://localhost:8080/records/requestid?id=" + event.data.requestID, requestOptions)
+                fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions)
                     .then((response) => response.json())
                     .then((data) => {
                         setStatus(data['status']);
@@ -284,7 +284,7 @@ const Pending = () => {
                             setStatus('Ready to Claim');
                             setStatusClass('capsuleCompleted');
                         }
-                        fetch("http://localhost:8080/comments/id?id=" + event.data.requestID, requestOptions)
+                        fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions)
                             .then((response) => response.json())
                             .then((data) => {
                                 setComments(data);
@@ -446,6 +446,15 @@ const Pending = () => {
                 </div>
                 <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
                 <textarea id='instruction' disabled='true' value={content}></textarea>
+                <DataTable value={comments} header={commentTableHeader}
+                        scrollable scrollHeight="17.48vw"
+                        emptyMessage="No comments found." id='tableOfComments'
+                        paginator rows={5}
+                        tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
+                        <Column field="sentBy" header="Sent by"></Column>
+                        <Column field="content" header="Content"></Column>
+                        <Column field="sentDate" header="Date"></Column>
+                </DataTable>
                 {/* <div id='columnizer'>
                     <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
                     <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
