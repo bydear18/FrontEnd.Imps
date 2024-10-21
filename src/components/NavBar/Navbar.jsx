@@ -58,7 +58,7 @@ const Navbar = () => {
                     setNotifShow('show');
                     
                     if(role === 'employee'){
-                        setRole('accType')
+                        setRole(accType)
                     }
 
                     return fetch(`https://backimps-production.up.railway.app/notifications/id?id=${userID}`, { method: 'GET', mode: 'cors', headers: { 'Content-Type': 'application/json' } });
