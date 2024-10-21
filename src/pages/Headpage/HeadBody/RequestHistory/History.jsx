@@ -11,6 +11,7 @@ import { DataTable } from 'primereact/datatable';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 
 const History = ({reqHistory}) => {
@@ -22,7 +23,7 @@ const History = ({reqHistory}) => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }});
-
+    const [otherComment, setOtherComment] = useState('');
     const [show, setShow] = useState('hide');
     const [commentShow, setCommentShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
@@ -80,7 +81,11 @@ const History = ({reqHistory}) => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-
+    const [commentOptions, setCommentOptions] = useState([
+        { label: 'Insufficient Information', value: 'Insufficient Information' },
+        { label: 'Invalid Request', value: 'Invalid Request' },
+        { label: 'Other', value: 'Other' },
+    ]);
     const handleAddComment = () => {
         setCommentDate(currentDate);
         setCommentHeader('');
@@ -376,12 +381,8 @@ const History = ({reqHistory}) => {
                                     value={otherComment} 
                                     onChange={(e) => setOtherComment(e.target.value)} 
                                 />
-                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(otherComment)} disabled={rejectDisable}>Reject</button>
                             </div>
                         )}
-                        {selectedComment !== 'Other' && (
-                                <button id='inAdd' style={{marginTop: '10vw'}} className={buttonShow} onClick={() => proceedReject(selectedComment)} disabled={rejectDisable}>Reject</button>
-                        )} 
                         </div>
                     </div>
 
@@ -397,12 +398,7 @@ const History = ({reqHistory}) => {
                         <Column field="content" header="Content"></Column>
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
-                
-                <div id='columnizer'>
-                    <a id='pendingGetRequest' href={downloadURL} target="_blank" download onClick={closeModal}>Get Request File</a>
-                    <button id='rejected' className='pendButtons' onClick={handleReject}>Reject</button>
-                    <button id='approved' className='pendButtons' onClick={handleAccept}>Accept</button>
-                </div>
+
             </div>
         </div>
     );

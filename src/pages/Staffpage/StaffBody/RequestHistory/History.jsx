@@ -10,8 +10,8 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
-import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 
 const History = ({reqHistory}) => {
@@ -23,7 +23,7 @@ const History = ({reqHistory}) => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }});
-
+    const [otherComment, setOtherComment] = useState('');
     const [show, setShow] = useState('hide');
     const [commentShow, setCommentShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
@@ -31,7 +31,6 @@ const History = ({reqHistory}) => {
 
     // Details
     const [selectedComment, setSelectedComment] = useState(null);
-    const [otherComment, setOtherComment] = useState('');
     const [requestID, setRequestID] = useState();
     const [department, setDepartment] = useState('');
     const [email, setEmail] = useState('');
@@ -56,9 +55,7 @@ const History = ({reqHistory}) => {
     const [requesterName, setRequesterName] = useState('');
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-    const [alert, setAlert] = useState('hide');
-    const [alertMsg, setAlertMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
@@ -72,22 +69,6 @@ const History = ({reqHistory}) => {
         return today.toISOString().substring(0,10);
     }
     
-    const showInfoPop = (message, isSuccess = false) => {
-        setAlert('show');
-        setAlertMsg(message);
-        setSuccess(isSuccess);
-      };
-    
-      const closeInfoPop = () => {
-        setAlert('hide');
-
-      };
-    
-      const [commentOptions, setCommentOptions] = useState([
-        { label: 'Insufficient Information', value: 'Insufficient Information' },
-        { label: 'Invalid Request', value: 'Invalid Request' },
-        { label: 'Other', value: 'Other' },
-    ]);
     // Date Values
     const [currentDate, setCurrentDate] = useState(getDate());
     
@@ -100,7 +81,11 @@ const History = ({reqHistory}) => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-
+    const [commentOptions, setCommentOptions] = useState([
+        { label: 'Insufficient Information', value: 'Insufficient Information' },
+        { label: 'Invalid Request', value: 'Invalid Request' },
+        { label: 'Other', value: 'Other' },
+    ]);
     const handleAddComment = () => {
         setCommentDate(currentDate);
         setCommentHeader('');
@@ -111,7 +96,6 @@ const History = ({reqHistory}) => {
     }
 
     const handleComplete = () => {
-        
         setCompleteDisable(true);
         const requestOptions = {
             method: 'POST',
@@ -121,9 +105,7 @@ const History = ({reqHistory}) => {
             },
             };
             fetch("https://backimps-production.up.railway.app/records/completedStatus?requestID=" + requestID + "&role=" + role + "&status=Completed&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
-            ).then((data) => {
-                showInfoPop(`Request Completed!`, true);
-                window.location.reload();})
+            ).then((data) => {window.location.reload();})
             .catch(error =>
                 {
                     console.log(error);
@@ -146,26 +128,6 @@ const History = ({reqHistory}) => {
         );
     };
 
-    const handleReject = () => {
-        setCompleteDisable(true);
-        const requestOptions = {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            };
-            fetch("https://backimps-production.up.railway.app/records/rejectedStatus?requestID=" + requestID + "&role=" + role + "&status=Rejected&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
-            ).then((data) => {window.location.reload();})
-            .catch(error =>
-                {
-                    console.log(error);
-                    
-                }
-            );
-
-            setCompleteDisable(false);
-    }
     const renderCommentHeader = () => {
         return (
             <div id="historyHeader" className="flex">
@@ -227,6 +189,7 @@ const History = ({reqHistory}) => {
                         setRejected('show');
                         setCommentDisabled('show');
                     }
+
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');
@@ -286,7 +249,6 @@ const History = ({reqHistory}) => {
         setShow('hide');
     }
 
-
     const getSeverity = (status) => {
         switch (status) {
             default:
@@ -311,7 +273,6 @@ const History = ({reqHistory}) => {
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
-
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
@@ -349,92 +310,89 @@ const History = ({reqHistory}) => {
 
     return(
         <div>
-        <div id="pendingTable">
-            <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
-                filters={filters} emptyMessage="No records found."
-                paginator rows={8}
-                tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
-                <Column field="userID" header="User ID"></Column>
-                <Column field="requestID" header="Request ID"sortable></Column>
-                <Column field="fileType" header="File Type"sortable></Column>
-                <Column field="fileName" header="File Name"></Column>
-                <Column field="requestDate" header="Request Date"></Column>
-                <Column field="useDate" header="Use Date"></Column>
-                <Column field="status" header="Status" body={statusBodyTemplate}sortable></Column>
-            </DataTable>
-        </div>
-        <div id="overlay" className={show} onClick={closeModal}></div>
-        <div id="requestBox" className={show}>
-        <div id="infoPopOverlay" className={alert}></div>
-        <div id="infoPop" className={alert}>
-            <p>{alertMsg}</p>
-            <button id="infoChangeBtn" onClick={closeInfoPop}>Close</button>
-        </div>
-            <div id='boxDeets'>
+            <div id="pendingTable">
+                <DataTable value={values} scrollable scrollHeight="30vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
+                    filters={filters} emptyMessage="No records found."
+                    paginator rows={8}
+                    tableStyle={{ minWidth: '20vw' }} selectionMode="single" onRowSelect={onRowSelect}>
+                    <Column field="userID" header="User ID"></Column>
+                    <Column field="requestID" header="Request ID"sortable></Column>
+                    <Column field="fileType" header="File Type"sortable></Column>
+                    <Column field="fileName" header="File Name"></Column>
+                    <Column field="requestDate" header="Request Date"></Column>
+                    <Column field="useDate" header="Use Date"></Column>
+                    <Column field="status" header="Status" body={statusBodyTemplate}sortable></Column>
+                </DataTable>
+            </div>
+            <div id="overlay" className={show} onClick={closeModal}></div>
+            <div id="requestBox" className={show}>
+                <div id='boxDeets'>
 
-                <div id='firstLine'>
-                    <h1 id='requestID'>{requestID}</h1>
-                    <div className={statusClass}>{status}</div>
-                    <p id='typeOfFile'>• {fileType}</p>
-                    <p className='dates'>Date Requested: <p id='dateRequest'>{requestDate}</p></p>
-                    <p className='dates'>Date Needed: <p id='dateUse'>{useDate}</p></p>
-                </div>
-
-                <p id='requester'>Request from:<p id='schoolId'>{schoolId}</p></p>
-
-                <div id='fileDeets'>FILE DETAILS</div>
-
-                <div id='secondLine'>
-                    <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName} />
-                </div>
-
-                <textarea id='descriptionOfFile' disabled='true' value={desc}>{desc}</textarea>
-
-                <div id='thirdLine'>
-                    <div id='hatagExam'>Give exam personally: </div>
-                    <input id='examBox' type='checkbox' checked={giveExam} disabled='true' />
-                </div>
-                <br></br>
-                <div id='fileDeets' style={{marginBottom:'.5vw'}}>PRINT SPECS</div>
-
-                <div id='fourthLine'>
-                    <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
-                        <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
-                        </div>
-                    </p>
-                </div>
-                <div id='fourthLine'>
-                    <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
-                        <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
-                    </p>
-                <br></br>
-                </div>
-                <div id='contactDeets' style={{marginBottom:'.5vw'}}>REQUESTER'S INFORMATION</div>
-                <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
-                <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
-                <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
-                <div id="deetCommentBody" className={commentShow}>
-                <div id='commBod'>
-                    <p>{commentDate}</p>
-                    <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
-                    <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
-                    {selectedComment === 'Other' && (
-                    <div>
-                        <textarea 
-                            className = 'showOther'
-                            placeholder="Please specify..." 
-                            value={otherComment} 
-                            onChange={(e) => setOtherComment(e.target.value)} 
-                        />
-
+                    <div id='firstLine'>
+                        <h1 id='requestID'>{requestID}</h1>
+                        <div className={statusClass}>{status}</div>
+                        <p id='typeOfFile'>• {fileType}</p>
+                        <p className='dates'>Date Requested: <p id='dateRequest'>{requestDate}</p></p>
+                        <p className='dates'>Date Needed: <p id='dateUse'>{useDate}</p></p>
                     </div>
-                )}
+
+                    <p id='requester'>Request from:<p id='schoolId'>{schoolId}</p></p>
+
+                    <div id='fileDeets'>FILE DETAILS</div>
+
+                    <div id='secondLine'>
+                        <p>File Name:</p> <input id='nameOfFile' type='text' disabled='true' value={fileName} />
+                    </div>
+
+                    <textarea id='descriptionOfFile' disabled='true' value={desc}>{desc}</textarea>
+
+                    <div id='thirdLine'>
+                        <div id='hatagExam'>Give exam personally: </div>
+                        <input id='examBox' type='checkbox' checked={giveExam} disabled='true' />
+                    </div>
+                    <br></br>
+                    <div id='fileDeets' style={{marginBottom:'.5vw'}}>PRINT SPECS</div>
+
+                    <div id='fourthLine'>
+                        <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
+                            </div>
+                        </p>
+                    </div>
+                    <div id='fourthLine'>
+                        <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
+                            <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
+                        </p>
+                    <br></br>
+                    </div>
+                    <div id='contactDeets' style={{marginBottom:'.5vw'}}>REQUESTER'S INFORMATION</div>
+                    <div className='infoLine'>Name: <div className='contactItem'>{requesterName}</div></div>
+                    <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
+                    <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
+
+                    <div id="overlay" className={commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className={commentShow}>
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <input type='text' value={commentHeader} onChange={(e) => setCommentHeader(e.target.value)} disabled='true' id='commHead' />
+                            <Dropdown value={selectedComment} options={commentOptions} onChange={(e) => setSelectedComment(e.value)} placeholder="Select a reason" />
+                            {selectedComment === 'Other' && (
+                            <div>
+                                <textarea 
+                                    className = 'showOther'
+                                    placeholder="Please specify..." 
+                                    value={otherComment} 
+                                    onChange={(e) => setOtherComment(e.target.value)} 
+                                />
+                            </div>
+                        )}
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            </div>
-            <p id='additionalInstructions'>{title}</p>
-            <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
-            <DataTable value={comments} header={commentTableHeader}
+                <p id='additionalInstructions'>ADDITIONAL INSTRUCTION</p>
+                <textarea id='instruction' disabled='true' value={content}></textarea>
+                <DataTable value={comments} header={commentTableHeader}
                         scrollable scrollHeight="17.48vw"
                         emptyMessage="No comments found." id='tableOfComments'
                         paginator rows={5}
@@ -443,21 +401,8 @@ const History = ({reqHistory}) => {
                         <Column field="content" header="Content"></Column>
                         <Column field="sentDate" header="Date"></Column>
                 </DataTable>
-                
-                    <div id='columnizer'>
-                        {status !== 'Rejected' && (
-                            <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
-                                Get Request File
-                            </a>
-                        )}
-                        {status === "Approved for Printing" && (
-                            <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
-                                Mark as Complete
-                            </button>
-                        )}
-                    </div>
 
-                </div>
+            </div>
         </div>
     );
 };
