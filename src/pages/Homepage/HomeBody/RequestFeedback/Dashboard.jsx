@@ -83,39 +83,12 @@ const Dashboard = () => {
                 <p className="notif-header">{notif.header}</p>
                 <p className="notif-content">{notif.content}</p>
                 
-                {notif.header === "Request Rejected!" && (
-                  <button onClick={() => handleContentClick(notif.requestID)}>View Comment</button>
-                )}
-                
                 <p className="notif-date">{notif.createdDate}</p>
               </div>
             ))
           )}
         </div>
       </div>
-
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Comments from Admin</h2>
-            {selectedContent.length === 0 ? (
-              <p>No comments available from Admin.</p>
-            ) : (
-              selectedContent.map((comment, index) => (
-                <div key={index}>
-                  <h3>{comment.header}</h3>
-                  <p>{comment.content}</p>
-                  <p style={{marginTop: '5vw'}}><em>Sent by: {comment.sentBy} on {comment.sentDate}</em></p>
-                  <hr />
-                </div>
-              ))
-            )}
-            <div className="modal-actions">
-              <button style={{marginTop: '2.5vw'}} className="close-button" onClick={closeModal}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
