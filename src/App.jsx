@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import Adminpage from './pages/Admin/Adminpage';
+import Adminpage from './pages/Admin/Adminpage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Homepage from './pages/Homepage/Homepage';
 import LoginPage from './pages/LoginPage/LoginPage';
