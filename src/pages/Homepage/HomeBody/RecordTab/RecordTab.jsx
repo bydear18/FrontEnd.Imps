@@ -343,6 +343,7 @@ const History = ({reqHistory}) => {
                     'Completed': 'Ready to Claim',
                 };
 
+                console.log(data);
                 const updatedData = data.map(item => ({
                     ...item,
                     status: statusMap[item.status] || item.status, 

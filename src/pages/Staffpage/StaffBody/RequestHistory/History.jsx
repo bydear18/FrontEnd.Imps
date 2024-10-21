@@ -370,7 +370,6 @@ const History = ({reqHistory}) => {
                     'In Progress': 'Approved for Printing',
                     'Completed': 'Ready to Claim',
                 };
-    
                 const updatedData = data
                     .map(item => ({
                         ...item,
