@@ -173,6 +173,32 @@ const History = ({reqHistory}) => {
             setCompleteDisable(false);
     }
     
+
+    const handleClaim = () => {
+        
+        setCompleteDisable(true);
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            };
+            fetch("https://backimps-production.up.railway.app/records/completedStatus?requestID=" + requestID + "&role=" + role + "&status=Claimed&email=" + email  + "&userID=" + userID + "&date=" + currentDate, requestOptions).then((response)=> response.json()
+            ).then((data) => {
+                showInfoPop(`Request Completed!`, true);
+                window.location.reload();})
+            .catch(error =>
+                {
+                    console.log(error);
+                    
+                }
+            );
+
+            setCompleteDisable(false);
+    }
+    
+
     const renderHeader = () => {
         return (
             <div id="historyHeader" className="flex">
@@ -481,6 +507,11 @@ const History = ({reqHistory}) => {
                         {status === "Approved for Printing" && (
                             <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
                                 Mark as Complete
+                            </button>
+                        )}
+                        {status === "Ready to Claim" && (
+                            <button id='markComplete' className={rejected} onClick={handleClaim} disabled={completeDisable}>
+                                Claim
                             </button>
                         )}
                     </div>

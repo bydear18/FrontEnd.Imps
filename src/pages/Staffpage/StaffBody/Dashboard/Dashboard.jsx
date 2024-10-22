@@ -77,6 +77,7 @@ const Dashboard = () => {
     inProgressRequests: 0,
     completedRequests: 0,
     rejectedRequests: 0,
+    claimedRequests: 0,
   });
 
   useEffect(() => {
@@ -89,6 +90,7 @@ const Dashboard = () => {
           inProgressRequests: data.inProgressRequests || 0,
           completedRequests: data.completedRequests || 0,
           rejectedRequests: data.rejectedRequests || 0,
+          claimedRequests: data.claimedRequests || 0,
         }));
       })
       .catch((error) => console.error("Error fetching request counts:", error));
@@ -254,7 +256,7 @@ const statusBodyTemplate = (rowData) => {
               <p className="box-text">Claimed</p>
             </div>
             <div className="extra-box">
-              <p className="count">{statistics.completedRequests}</p>
+              <p className="count">{statistics.claimedRequests}</p>
             </div>
           </div>
 
