@@ -265,7 +265,7 @@ const History = ({reqHistory}) => {
                         setRejected('show');
                         setCommentDisabled('show');
                     }
-                    
+
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');
@@ -477,11 +477,6 @@ const History = ({reqHistory}) => {
                             <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
                                 Get Request File
                             </a>
-                        )}
-                        {status === "Approved for Printing" && (
-                            <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>
-                                Mark as Complete
-                            </button>
                         )}
                     </div>
 
