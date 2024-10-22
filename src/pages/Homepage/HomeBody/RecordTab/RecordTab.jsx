@@ -441,7 +441,6 @@ const History = ({reqHistory}) => {
                             <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                         </div>
                     </div>
-
                 </div>
                 <DataTable value={comments} header={commentTableHeader}
                         scrollable scrollHeight="17.48vw"

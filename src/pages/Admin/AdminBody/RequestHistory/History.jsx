@@ -170,7 +170,6 @@ const History = ({reqHistory}) => {
         return (
             <div id="historyHeader" className="flex">
                 <h1 id='commentHeader'>Comments</h1>
-                <button id='addComment' className={commentDisabled} onClick={handleAddComment}>+</button>
             </div>
         );
     };
