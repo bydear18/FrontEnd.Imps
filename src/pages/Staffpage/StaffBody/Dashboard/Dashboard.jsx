@@ -152,6 +152,7 @@ const Dashboard = () => {
     fetch(`https://backimps-production.up.railway.app/records/all`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const statusMap = {
           'Waiting for Approval': 'Pending',
           'Approved for Printing': 'In Progress',
@@ -159,7 +160,7 @@ const Dashboard = () => {
           'Claimed': 'Claimed',
           'Rejected': 'Rejected',
         };
-  
+        
         const updatedData = data
           .map(item => ({
             ...item,
