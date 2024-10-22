@@ -58,7 +58,7 @@ const History = ({reqHistory}) => {
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const firstCommentName = localStorage.getItem('firstName');
-    const lastCommentName = localStorage.getItem("schoolId");
+    const lastCommentName = localStorage.getItem("lastName");
  
     // Details
     const [bindType, setBindType] = useState('');
