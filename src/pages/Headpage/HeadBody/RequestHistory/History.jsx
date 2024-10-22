@@ -105,7 +105,7 @@ const History = ({reqHistory}) => {
     }
     const createComment = () => {
         const commentData = new FormData();
-        commentData.append("sentBy", `Staff`);
+        commentData.append("sentBy", `Head`);
         commentData.append("header", commentHeader);
         commentData.append("content", commentContent);
         commentData.append("sentDate", commentDate);
