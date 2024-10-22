@@ -77,6 +77,7 @@ const Dashboard = () => {
     inProgressRequests: 0,
     completedRequests: 0,
     rejectedRequests: 0,
+    claimedRequests: 0,
   });
 
   useEffect(() => {
@@ -89,6 +90,7 @@ const Dashboard = () => {
           inProgressRequests: data.inProgressRequests || 0,
           completedRequests: data.completedRequests || 0,
           rejectedRequests: data.rejectedRequests || 0,
+          claimedRequests: data.claimedRequests || 0,
         }));
       })
       .catch((error) => console.error("Error fetching request counts:", error));
@@ -150,6 +152,7 @@ const Dashboard = () => {
     fetch(`https://backimps-production.up.railway.app/records/all`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const statusMap = {
           'Waiting for Approval': 'Pending',
           'Approved for Printing': 'In Progress',
@@ -157,7 +160,7 @@ const Dashboard = () => {
           'Claimed': 'Claimed',
           'Rejected': 'Rejected',
         };
-  
+        
         const updatedData = data
           .map(item => ({
             ...item,
@@ -254,7 +257,7 @@ const statusBodyTemplate = (rowData) => {
               <p className="box-text">Claimed</p>
             </div>
             <div className="extra-box">
-              <p className="count">{statistics.completedRequests}</p>
+              <p className="count">{statistics.claimedRequests}</p>
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './headdashboard.css';
+import './Dashboard.css';
 import { FaFileAlt, FaUser, FaCheckCircle } from 'react-icons/fa';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -77,6 +77,7 @@ const Dashboard = () => {
     inProgressRequests: 0,
     completedRequests: 0,
     rejectedRequests: 0,
+    claimedRequests: 0,
   });
 
   useEffect(() => {
@@ -89,6 +90,7 @@ const Dashboard = () => {
           inProgressRequests: data.inProgressRequests || 0,
           completedRequests: data.completedRequests || 0,
           rejectedRequests: data.rejectedRequests || 0,
+          claimedRequests: data.claimedRequests || 0,
         }));
       })
       .catch((error) => console.error("Error fetching request counts:", error));
@@ -150,6 +152,7 @@ const Dashboard = () => {
     fetch(`https://backimps-production.up.railway.app/records/all`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const statusMap = {
           'Waiting for Approval': 'Pending',
           'Approved for Printing': 'In Progress',
@@ -157,7 +160,7 @@ const Dashboard = () => {
           'Claimed': 'Claimed',
           'Rejected': 'Rejected',
         };
-  
+        
         const updatedData = data
           .map(item => ({
             ...item,
@@ -254,7 +257,7 @@ const statusBodyTemplate = (rowData) => {
               <p className="box-text">Claimed</p>
             </div>
             <div className="extra-box">
-              <p className="count">{statistics.completedRequests}</p>
+              <p className="count">{statistics.claimedRequests}</p>
             </div>
           </div>
 
@@ -273,7 +276,7 @@ const statusBodyTemplate = (rowData) => {
             <DataTable value={values} scrollable scrollHeight="20vw" header={header} globalFilterFields={['userID', 'requestID', 'fileName', 'requestDate']}
                 filters={filters} emptyMessage="No records found."
                 paginator rows={8}
-                tableStyle={{ minWidth: '20vw'}} selectionMode="single">
+                tableStyle={{ minWidth: '20vw' }} selectionMode="single">
                 <Column field="userID" header="User ID"></Column>
                 <Column field="requestID" header="Request ID"sortable></Column>
                 <Column field="fileType" header="File Type"sortable></Column>
