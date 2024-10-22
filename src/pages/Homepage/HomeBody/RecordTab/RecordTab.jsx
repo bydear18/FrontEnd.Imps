@@ -57,7 +57,8 @@ const History = ({reqHistory}) => {
     const [requesterName, setRequesterName] = useState('');
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-
+    const firstCommentName = localStorage.getItem('firstName');
+    const lastCommentName = localStorage.getItem("schoolId");
  
     // Details
     const [bindType, setBindType] = useState('');
@@ -148,8 +149,8 @@ const History = ({reqHistory}) => {
 
     const createComment = () => {
         const commentData = new FormData();
-        if (firstName && lastName) {
-            commentData.append("sentBy", `${firstName} ${lastName}`);
+        if (firstCommentName && lastCommentName) {
+            commentData.append("sentBy", `${firstCommentName} ${lastCommentName}`);
         } else {
             console.error("First name and last name must be provided");
         }
