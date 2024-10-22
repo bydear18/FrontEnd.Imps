@@ -292,7 +292,11 @@ const History = ({reqHistory}) => {
                     }else if (data['status'] === 'Claimed'){
                         setRejected('hide');
                         setCommentDisabled('show');
+                    } else{
+                        setRejected('show');
+                        setCommentDisabled('show');
                     }
+
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');
