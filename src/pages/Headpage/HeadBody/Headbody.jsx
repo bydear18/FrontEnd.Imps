@@ -19,7 +19,7 @@ function HomeBody () {
 
     useEffect(() => {
         if(localStorage.getItem("isLoggedIn")!=="true"){
-            navigate("/head");
+            navigate("/");
         }
         if(localStorage.getItem("role") ==="head"){
             navigate("/head");
