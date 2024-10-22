@@ -511,7 +511,7 @@ const History = ({reqHistory}) => {
                             </button>
                         )}
                         {status === "Ready to Claim" && (
-                            <button id='markComplete' className={rejected} onClick={handleClaim}>
+                            <button id='markComplete' className={rejected} onClick={handleClaim} disabled={completeDisable}>
                                 Claim
                             </button>
                         )}
