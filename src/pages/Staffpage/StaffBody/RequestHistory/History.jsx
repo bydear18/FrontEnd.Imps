@@ -305,7 +305,7 @@ const History = ({reqHistory}) => {
                     } else if (data['status'] === 'Completed') {
                         setStatus('Ready to Claim');
                         setStatusClass('capsuleCompleted');
-                    }
+                    } 
                     fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
                         setComments(data);
@@ -395,6 +395,7 @@ const History = ({reqHistory}) => {
                     'Pending': 'Waiting for Approval',
                     'In Progress': 'Approved for Printing',
                     'Completed': 'Ready to Claim',
+                    'Claimed': 'Claimed',
                 };
                 const updatedData = data
                     .map(item => ({
@@ -499,7 +500,7 @@ const History = ({reqHistory}) => {
                 </DataTable>
 
                     <div id='columnizer'>
-                        {status !== 'Rejected' && (
+                        {status === 'Approved for Printing' && (
                             <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
                                 Get Request File
                             </a>
@@ -513,11 +514,6 @@ const History = ({reqHistory}) => {
                             <button id='markComplete' className={rejected} onClick={handleClaim} disabled={completeDisable}>
                                 Claim
                             </button>
-                        )}
-                        {status !== 'Ready to Claim' && (
-                            <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
-                                Get Request File
-                            </a>
                         )}
 
                     </div>
