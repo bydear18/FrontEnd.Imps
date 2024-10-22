@@ -34,20 +34,23 @@ function HomeBody () {
         <div id='layer'>
             <div id="container">
                 <div className={toggleState === 1 ? "tab active-tab" : "tab"} onClick={() => toggleTab(1)}>Home</div>
-                <div className={toggleState === 2 ? "tab active-tab" : "tab"} onClick={() => toggleTab(2)}>Summary of Requests</div>
-                <div className={toggleState === 3 ? "tab active-tab" : "tab"} onClick={() => toggleTab(3)}>System Report</div>
+                <div className={toggleState === 2 ? "tab active-tab" : "tab"} onClick={() => toggleTab(2)}>Dashboard</div>
+                <div className={toggleState === 3 ? "tab active-tab" : "tab"} onClick={() => toggleTab(3)}>Summary of Requests</div>
+                <div className={toggleState === 4 ? "tab active-tab" : "tab"} onClick={() => toggleTab(4)}>System Report</div>
             </div>
 
 
             <div className={toggleState === 1 ? "content active-content" : "content"} onClick={() => toggleTab(1)}>
                 <Hometab/>
             </div>
-
             <div className={toggleState === 2 ? "content active-content" : "content"} onClick={() => toggleTab(2)}>
+                <Dashboard/>
+            </div>
+            <div className={toggleState === 3 ? "content active-content" : "content"} onClick={() => toggleTab(3)}>
                 <RequestHistory/>
             </div>
 
-            <div className={toggleState === 3 ? "content active-content" : "content"} onClick={() => toggleTab(3)}>
+            <div className={toggleState === 4 ? "content active-content" : "content"} onClick={() => toggleTab(4)}>
                 <SystemReport/>
             </div>
 
