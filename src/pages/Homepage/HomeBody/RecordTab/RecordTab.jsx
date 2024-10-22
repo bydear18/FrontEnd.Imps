@@ -252,9 +252,9 @@ const History = ({reqHistory}) => {
                     } else if (data['status'] === 'Completed') {
                         setStatus('Ready to Claim');
                         setStatusClass('capsuleCompleted');
-                    } else if (data['status'] === 'Completed') {
+                    } else if (data['status'] === 'Claimed') {
                         setStatus('Ready to Claim');
-                        setStatusClass('capsuleCompleted');
+                        setStatusClass('capsuleClaimed');
                     } 
                     fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
