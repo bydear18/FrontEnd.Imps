@@ -18,13 +18,15 @@ function HomeBody () {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(localStorage.getItem("isLoggedIn")!=="true"{
+        if(localStorage.getItem("isLoggedIn")!=="true"){
             navigate("/head");
         }
-        if(localStorage.getItem("role") === "head"{
+        if(localStorage.getItem("role") ==="head"){
             navigate("/head");
         }
+      
     });
+
 
     const [toggleState, setToggleState] = useState(1);
 
