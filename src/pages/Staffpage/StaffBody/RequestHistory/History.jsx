@@ -151,7 +151,7 @@ const History = ({reqHistory}) => {
 
     const handleComplete = () => {
         
-        setCompleteDisable(true);
+        setCompleteDisable(false);
         const requestOptions = {
             method: 'POST',
             mode: 'cors',
@@ -514,6 +514,12 @@ const History = ({reqHistory}) => {
                                 Claim
                             </button>
                         )}
+                        {status !== 'Ready to Claim' && (
+                            <a id='pendingGetRequest' target="_blank" href={downloadURL} download onClick={closeModal}>
+                                Get Request File
+                            </a>
+                        )}
+
                     </div>
 
                 </div>
