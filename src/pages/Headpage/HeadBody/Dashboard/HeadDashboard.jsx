@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './Dashboard.css';
+import './headdashboard.css';
 import { FaFileAlt, FaUser, FaCheckCircle } from 'react-icons/fa';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
