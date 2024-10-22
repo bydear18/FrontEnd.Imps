@@ -240,6 +240,15 @@ const History = ({reqHistory}) => {
                 fetch("https://backimps-production.up.railway.app/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
+
+                    if(data['status'] === 'Rejected'){
+                        setRejected('show');
+                        setCommentDisabled('show');
+                    }else{
+                        setRejected('show');
+                        setCommentDisabled('show');
+                    }
+                    
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');

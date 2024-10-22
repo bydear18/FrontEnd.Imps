@@ -260,11 +260,12 @@ const History = ({reqHistory}) => {
                     setStatus(data['status']);
                     if(data['status'] === 'Rejected'){
                         setRejected('show');
-                        setCommentDisabled('hide');
+                        setCommentDisabled('show');
                     }else{
                         setRejected('show');
                         setCommentDisabled('show');
                     }
+                    
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');
