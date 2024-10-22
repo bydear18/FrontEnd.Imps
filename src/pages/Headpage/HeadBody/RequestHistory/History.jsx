@@ -501,7 +501,6 @@ const Pending = () => {
                             <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
                         </div>
                     </div>
-                    </div>
 
                 </div>
                 <DataTable value={comments} header={commentTableHeader}
