@@ -244,7 +244,7 @@ const History = ({reqHistory}) => {
                         setStatusClass('capsuleCompleted');
                     } else if (data['status'] === 'Claimed') {
                         setStatus('Claimed');
-                        setStatusClass('capsuleClaimed');
+                        setStatusClass('capsuleCompleted');
                     } 
                     fetch("https://backimps-production.up.railway.app/comments/id?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                     ).then((data) => { 
