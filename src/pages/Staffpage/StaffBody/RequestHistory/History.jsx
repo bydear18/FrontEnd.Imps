@@ -288,9 +288,9 @@ const History = ({reqHistory}) => {
                         setRejected('show');
                         setCommentDisabled('hide');
                     }else if (data['status'] === 'Completed'){
-                        setRejected('hide');
-                    }else{
                         setRejected('show');
+                    }else if (data['status'] === 'Claimed'){
+                        setRejected('hide');
                         setCommentDisabled('show');
                     }
                     if (data['status'] === 'Rejected') {
