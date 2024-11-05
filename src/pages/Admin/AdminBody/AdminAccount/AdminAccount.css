@@ -17,7 +17,31 @@
     align-items: center; 
     z-index: 999; 
 }
-
+.confirm-modal{
+    background-color: #fff;
+    padding: 25px;
+}
+.delete-button{
+    margin: 10px 0px 10px 10px;
+    padding: 5px 10px; 
+    border: none;
+    background-color: #8f271a;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.confirm-modal button{
+    padding: 5px 10px; 
+    border: none;
+    background-color: #8f271a;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    color: white;
+    cursor: pointer;
+    margin-top: 25px;
+    margin-left: 100px;
+    border-radius: 3px;
+}
 .staff-container {
     background: white; 
     border-radius: 8px;

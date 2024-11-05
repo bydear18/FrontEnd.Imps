@@ -89,116 +89,70 @@ const Reports = () => {
   const header = renderHeader();
 
   useEffect(() => {
-      const date = new Date();
-      if(dates === 'week'){
-          date.setDate(date.getDate() - 7);
-      }else if (dates === '2week'){
-          date.setDate(date.getDate() - 14);
-      }else if (dates === '3week'){
-          date.setDate(date.getDate() - 21);
-      }else if (dates === 'month'){
-          date.setDate(date.getDate() - 30);
-      }else if (dates === '2month'){
-          date.setDate(date.getDate() - 60);
-      }
+    const date = new Date();
+    if (dates === 'week') {
+        date.setDate(date.getDate() - 7);
+    } else if (dates === '2week') {
+        date.setDate(date.getDate() - 14);
+    } else if (dates === '3week') {
+        date.setDate(date.getDate() - 21);
+    } else if (dates === 'month') {
+        date.setDate(date.getDate() - 30);
+    } else if (dates === '2month') {
+        date.setDate(date.getDate() - 60);
+    }
 
-      const requestOptions = {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
+    const requestOptions = {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
             'Content-Type': 'application/json',
         },
-        };
-      
-      fetch("https://backimps-production.up.railway.app/records/getModules?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setModules(data); 
-      })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
+    };
 
-      fetch("https://backimps-production.up.railway.app/requests/getModuleCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setModuleCopies(data); 
-      })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
+    // Create an array of fetch promises
+    const fetchPromises = [
+        fetch(`https://backimps-production.up.railway.app/records/getModules?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setModules(data)),
+        fetch(`https://backimps-production.up.railway.app/requests/getModuleCopies?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setModuleCopies(data)),
+        fetch(`https://backimps-production.up.railway.app/records/getOfficeForms?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setOfficeForms(data)),
+        fetch(`https://backimps-production.up.railway.app/requests/getOfficeFormCopies?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setOfficeCopies(data)),
+        fetch(`https://backimps-production.up.railway.app/records/getExams?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setExams(data)),
+        fetch(`https://backimps-production.up.railway.app/requests/getExamCopies?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setExamCopies(data)),
+        fetch(`https://backimps-production.up.railway.app/records/getManuals?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setManuals(data)),
+        fetch(`https://backimps-production.up.railway.app/requests/getManualCopies?dates=${date.toISOString().substring(0, 10)}`, requestOptions).then(response => response.json()).then(data => setManualCopies(data)),
+    ];
 
-      fetch("https://backimps-production.up.railway.app/records/getOfficeForms?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setOfficeForms(data);})
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
+    // Wait for all fetch promises to complete
+    Promise.all(fetchPromises)
+        .then(() => {
+            setValues([
+                {
+                    fileType: 'Module',
+                    number: modules,
+                    copies: moduleCopies,
+                },
+                {
+                    fileType: 'Office Form',
+                    number: officeForms,
+                    copies: officeCopies,
+                },
+                {
+                    fileType: 'Exam',
+                    number: exams,
+                    copies: examCopies,
+                },
+                {
+                    fileType: 'Manual',
+                    number: manuals,
+                    copies: manualCopies,
+                },
+            ]);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}, [dates]); // Removed unnecessary dependencies to avoid re-fetching on every change
 
-      fetch("https://backimps-production.up.railway.app/requests/getOfficeFormCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setOfficeCopies(data);;
-      })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
-
-      fetch("https://backimps-production.up.railway.app/records/getExams?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setExams(data); })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
-
-      fetch("https://backimps-production.up.railway.app/requests/getExamCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setExamCopies(data); 
-      })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
-
-      fetch("https://backimps-production.up.railway.app/records/getManuals?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setManuals(data);})
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
-
-      fetch("https://backimps-production.up.railway.app/requests/getManualCopies?dates=" + date.toISOString().substring(0,10), requestOptions).then((response)=> response.json()
-      ).then((data) => { setManualCopies(data);
-      })
-      .catch(error =>
-          {
-              console.log(error);
-          }
-      );
-
-      setValues([
-          {
-              'fileType' : 'Module',
-              'number': modules,
-              'copies' : moduleCopies}
-          ,{
-              'fileType' : 'Office Form',
-              'number' : officeForms,
-              'copies' : officeCopies}
-          ,{
-              'fileType' : 'Exam',
-              'number' : exams,
-              'copies' : examCopies}
-          ,{
-              'fileType' : 'Manual',
-              'number' : manuals,
-              'copies' : manualCopies
-          }
-      ]);
-  }, [dates, modules, officeForms, manuals, exams, moduleCopies, officeCopies, examCopies, manualCopies]);
 
   useEffect(() => {
     fetch("https://backimps-production.up.railway.app/services/statistics") 

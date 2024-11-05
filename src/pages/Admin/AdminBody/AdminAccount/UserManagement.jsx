@@ -18,10 +18,18 @@ const UserManagement = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [userToEdit, setUserToEdit] = useState(null);
   const [confirmPass, setConfirmPass] = useState('');
   const [schoolId, setSchoolId] = useState('');
   const [role, setRole] = useState('staff');
   const navigate = useNavigate();
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [editedFirstName, setEditedFirstName] = useState('');
+  const [editedLastName, setEditedLastName] = useState('');
+  const [editedEmail, setEditedEmail] = useState('');
+  const [editedSchoolId, setEditedSchoolId] = useState('');
 
 
   const renderHeader = () => {
@@ -42,6 +50,7 @@ const UserManagement = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
   const header = renderHeader();
@@ -165,28 +174,96 @@ const UserManagement = () => {
       });
   };
 
-  const roleBodyTemplate = (rowData) => {
+  const closeDeleteConfirm = () => {
+    setIsDeleteConfirmOpen(false);
+    setUserToDelete(null); 
+  };
 
-    if(rowData.role === 'employee' && rowData.adminVerified === false){
+  const handleDelete = (userEmail) => {
+    setUserToDelete(userEmail); // Set the user to delete
+    setIsDeleteConfirmOpen(true); // Open confirmation modal
+  };
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      confirmDelete(userToDelete); 
+    }
+  };
+  const confirmDelete = (userEmail) => {
+    console.log(userEmail);
+    const requestOptions = {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: userEmail }),
+    };
+  
+    fetch('https://backimps-production.up.railway.app/services/deleteUser', requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          console.log('User deleted:', userEmail);
+          setValues((prevValues) => prevValues.filter(user => user.email !== userEmail));
+          showInfoPop(`User deleted successfully!`, true);
+        } else {
+          console.error('Error declining user:', data.message);
+          showInfoPop(`Error declining user: ${data.message}`);
+        }
+        closeDeleteConfirm(); 
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        showInfoPop('An error occurred while deleting the user.');
+        closeDeleteConfirm(); 
+      });
+  };
+
+  const roleBodyTemplate = (rowData) => {
+    if (rowData.role === 'employee') {
+      if (rowData.adminVerified) {
+        return (
+          <button onClick={() => handleDelete(rowData.email)} className='delete-button'>
+            Delete
+          </button>
+        );
+      } else {
+        return (
+          <div>
+            <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
+              Accept
+            </button>
+            <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
+              Decline
+            </button>
+          </div>
+        );
+      }
+    }
+    else if (rowData.role === 'staff'){
       return (
         <div>
-          <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
-            Accept
+          <button onClick={() => handleEditStaff(rowData.email)} className='accept-button'>
+            Edit
           </button>
-          <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
-            Decline
+          <button onClick={() => handleDelete(rowData.email)} className='delete-button'>
+            Delete
           </button>
         </div>
       );
     }
-
+    return null; // Return null if the row is not an employee
   };
+
   const closeButton = ()=>{
     setIsModalOpen(false);
+    setIsEditModalOpen(false);
   }
+
   const handleAddStaff = ()=>{
     setIsModalOpen(true);
   }
+
   const addStaff = () => {
     const requestOptionsGET = {
         method: 'GET',
@@ -262,6 +339,54 @@ const UserManagement = () => {
         });
 };
 
+  const handleEditStaff = (user) => {
+    setUserToEdit(user);
+    setEditedFirstName(user.firstName);
+    setEditedLastName(user.lastName);
+    setEditedEmail(user.email);
+    setEditedSchoolId(user.schoolId);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    const requestOptions = {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: editedEmail,
+        firstName: editedFirstName,
+        lastName: editedLastName,
+        schoolId: editedSchoolId,
+      }),
+    };
+  
+    fetch(`https://backimps-production.up.railway.app/services/updateStaff?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          // Update the staff list
+          setValues((prevValues) =>
+            prevValues.map((user) =>
+              user.email === editedEmail
+                ? { ...user, firstName: editedFirstName, lastName: editedLastName, schoolId: editedSchoolId }
+                : user
+            )
+          );
+          showInfoPop('Staff updated successfully!', true);
+          closeModal();
+        } else {
+          showInfoPop(`Error updating staff: ${data.message}`);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        showInfoPop('An error occurred while updating the staff.');
+      });
+  };
+  
 
   return (
     <div>
@@ -373,6 +498,98 @@ const UserManagement = () => {
         )}
 
 
+    {isEditModalOpen && (
+          <div className="modal-backdrop" onClick={closeModal}>
+            <div className="staff-container" onClick={(e) => e.stopPropagation()}>
+            <div id="infoPopOverlay" className={alert}></div>
+              <div id="infoPop" className={alert}>
+                  <p>{alertMsg}</p>
+                  <button id="infoChangeBtn" onClick={closeInfoPop}>Close</button>
+              </div>
+              <form>
+                <h2 style={{ marginBottom: "4vw" }}>Edit Staff</h2>
+                <div className="form-row">
+                  {/* First Column */}
+                  <div className="column">
+                    <label>
+                      <FaUser />
+                      <input
+                        className="regShad"
+                        required
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="First Name"
+                      />
+                    </label>
+                    <label>
+                      <FaUser />
+                      <input
+                        className="regInput regShad"
+                        required
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Last Name"
+                      />
+                    </label>
+                  </div>
+                  <div className="column">
+                    <label>
+                      <HiAtSymbol id="emailSym" />
+                      <input
+                        className="regShad"
+                        id="emailIn"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                      />
+                    </label>
+                    <label>
+                      <FaLock />
+                      <input
+                        className="regShad"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                      />
+                    </label>
+                    <label>
+                      <HiIdentification />
+                      <input
+                        className="regShad"
+                        type="text"
+                        value={schoolId}
+                        onChange={(e) => setSchoolId(e.target.value)}
+                        placeholder="School ID (xx-xxxx-xxx)"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div className="register-button">
+                  <button className="register-button" type="button" onClick={handleSaveEdit}>
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Delete confirmation modal */}
+        {isDeleteConfirmOpen && (
+          <div className="modal-backdrop" onClick={closeDeleteConfirm}>
+            <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+              <h3>Are you sure you want to delete this user?</h3>
+              <button onClick={handleConfirmDelete}>Yes, Delete</button>
+              <button onClick={closeDeleteConfirm} className='cancel-button'>Cancel</button>
+            </div>
+          </div>
+        )}
+
         <div id="usersTable" style={{marginTop: '-2vw'}}>
             <DataTable
                 value={values.filter(user => user.role === 'staff')} 
@@ -388,6 +605,7 @@ const UserManagement = () => {
                 <Column field="lastName" header="Last Name"></Column>
                 <Column field="email" header="Email"></Column>
                 <Column field="role" header="Role"></Column>
+                <Column field="Action" header="Action" body={roleBodyTemplate}></Column>
             </DataTable>
         </div>
 

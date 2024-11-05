@@ -16,7 +16,7 @@ const Dashboard = () => {
       },
     };
 
-    fetch("https://backimps-production.up.railway.app/notifications/id?id=" + localStorage.getItem("userID"), requestOptions)
+    fetch("http://localhost:8080/notifications/id?id=" + localStorage.getItem("userID"), requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setValues(data);
@@ -26,14 +26,14 @@ const Dashboard = () => {
       });
 
     if (localStorage.getItem("isLoggedIn") === "true") {
-      fetch("https://backimps-production.up.railway.app/services/checkAdmin?email=" + localStorage.getItem("email"), requestOptions)
+      fetch("http://localhost:8080/services/checkAdmin?email=" + localStorage.getItem("email"), requestOptions)
         .then((response) => response.json())
         .then((data) => {
           if (data !== true) {
             setNotifShow('show');
           } else {
             setNotifShow('hide');
-            fetch("https://backimps-production.up.railway.app/notifications/id?id=" + localStorage.getItem("userID"), requestOptions)
+            fetch("http://localhost:8080/notifications/id?id=" + localStorage.getItem("userID"), requestOptions)
               .then((response) => response.json())
               .then((data) => {
                 setValues(data);
@@ -52,7 +52,7 @@ const Dashboard = () => {
   }, []);
 
   const handleContentClick = (requestID) => {
-    fetch(`https://backimps-production.up.railway.app/comments/id?id=${requestID}`)
+    fetch(`http://localhost:8080/comments/id?id=${requestID}`)
       .then((response) => response.json())
       .then((data) => {
         // Filter comments sent by Admin
