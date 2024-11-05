@@ -21,7 +21,7 @@ const LoginNavbar = () => {
           },
           };
         
-          fetch("http://localhost:8080/notifications/id?id=" + localStorage.getItem("userID"), requestOptions).then((response)=> response.json()
+          fetch("https://backimps-production.up.railway.app/notifications/id?id=" + localStorage.getItem("userID"), requestOptions).then((response)=> response.json()
           ).then((data) => { setValues(data);})
           .catch(error =>
               {
