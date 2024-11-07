@@ -20,14 +20,14 @@ const Reports = () => {
   });
 
   const pdfRef = useRef();
-  const [modules, setModules] = useState(10);
-  const [moduleCopies, setModuleCopies] = useState(100);
-  const [officeForms, setOfficeForms] = useState(9);
-  const [officeCopies, setOfficeCopies] = useState(0);
-  const [exams, setExams] = useState(5);
-  const [examCopies, setExamCopies] = useState(0);
-  const [manuals, setManuals] = useState(17);
-  const [manualCopies, setManualCopies] = useState(0);
+  const [modules, setModules] = useState();
+  const [moduleCopies, setModuleCopies] = useState();
+  const [officeForms, setOfficeForms] = useState();
+  const [officeCopies, setOfficeCopies] = useState();
+  const [exams, setExams] = useState();
+  const [examCopies, setExamCopies] = useState();
+  const [manuals, setManuals] = useState();
+  const [manualCopies, setManualCopies] = useState();
   const [dates, setDates] = useState('week');
   
   const [values, setValues] = useState([
