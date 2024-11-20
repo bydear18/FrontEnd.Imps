@@ -111,11 +111,6 @@ const RegisterBody = () => {
             return;
         }
     
-        if (!schoolId.match(isValidSchoolId)) {
-            infoPop('Invalid School ID format! Please use the format xx-xxxx-xxx.');
-            return;
-        }
-    
         if (!email.match(isValidEmail)) {
             infoPop('Please use a valid cit.edu email address to register.');
             return;
