@@ -9,12 +9,12 @@ import 'chart.js/auto';
 
 const Reports = () => {
   const [statistics, setStatistics] = useState({
-    total: 0,
-    waitingApproval: 0,
-    approved: 0,
-    readyToClaim: 0,
-    claimed: 0,
-    rejected: 0,
+    totalRequests: 0,
+    pendingRequests: 0,
+    approvedRequests: 0,
+    inProgressRequests: 0,
+    claimedRequests: 0,
+    rejectedRequests: 0,
   });
 
   const pdfRef = useRef();
@@ -27,7 +27,7 @@ const Reports = () => {
   const [manuals, setManuals] = useState(0);
   const [manualCopies, setManualCopies] = useState(0);
   const [dates, setDates] = useState('week');
-
+  
   const [values, setValues] = useState([
     {
       fileType: 'Module',
@@ -89,36 +89,46 @@ const Reports = () => {
 
   const header = renderHeader();
 
+  // Fetch request statistics
   useEffect(() => {
-    fetch('http://localhost:8080/services/statistics')
+    fetch("http://localhost:8080/records/requestCounts")
       .then((response) => response.json())
       .then((data) => {
-        setStatistics({
-          total: data.total || 0,
-          waitingApproval: data.waitingApproval || 0,
-          approved: data.approved || 0,
-          readyToClaim: data.readyToClaim || 0,
-          claimed: data.claimed || 0,
-          rejected: data.rejected || 0,
-        });
+        setStatistics((prevState) => ({
+          ...prevState,
+          totalRequests: data.totalRequests || 0,
+          pendingRequests: data.pendingRequests || 0,
+          approvedRequests: data.approvedRequests || 0,
+          inProgressRequests: data.inProgressRequests || 0,
+          claimedRequests: data.claimedRequests || 0,
+          rejectedRequests: data.rejectedRequests || 0,
+        }));
       })
-      .catch((error) => console.error('Error fetching user statistics:', error));
+      .catch((error) => console.error("Error fetching request counts:", error));
   }, []);
 
+  // Data for the chart
   const chartData = {
-    labels: ['Total', 'Waiting Approval', 'Approved', 'Ready to Claim', 'Claimed', 'Rejected'],
+    labels: [
+      'Total Requests',
+      'Waiting for Approval Requests',
+      'Approved Requests',
+      'Ready to Claim Requests',
+      'Claimed Requests',
+      'Rejected Requests',
+    ],
     datasets: [
       {
         label: 'Requests',
         data: [
-          statistics.total,
-          statistics.waitingApproval,
-          statistics.approved,
-          statistics.readyToClaim,
-          statistics.claimed,
-          statistics.rejected,
+          statistics.totalRequests,
+          statistics.pendingRequests,
+          statistics.approvedRequests,
+          statistics.inProgressRequests,
+          statistics.claimedRequests,
+          statistics.rejectedRequests,
         ],
-        backgroundColor: ['#c13e90', '#22dd58', '#e48d8e', '#ffd700', '#1e90ff', '#ff4500'],
+        backgroundColor: ['#c13e90', '#ffdd59', '#22dd58', '#44b6f8', '#a13ef0', '#e48d8e'],
       },
     ],
   };
@@ -132,13 +142,14 @@ const Reports = () => {
     },
   };
 
-  const requestsData = [
-    { type: 'Total Requests', count: statistics.total },
-    { type: 'Waiting for Approval Requests', count: statistics.waitingApproval },
-    { type: 'Approved Requests', count: statistics.approved },
-    { type: 'Ready to Claim Requests', count: statistics.readyToClaim },
-    { type: 'Claimed Requests', count: statistics.claimed },
-    { type: 'Rejected Requests', count: statistics.rejected },
+  // Data for the user statistics table
+  const usersData = [
+    { type: 'Total Requests', count: statistics.totalRequests },
+    { type: 'Waiting for Approval Requests', count: statistics.pendingRequests },
+    { type: 'Approved Requests', count: statistics.approvedRequests },
+    { type: 'Ready to Claim Requests', count: statistics.inProgressRequests },
+    { type: 'Claimed Requests', count: statistics.claimedRequests },
+    { type: 'Rejected Requests', count: statistics.rejectedRequests },
   ];
 
   return (
@@ -164,16 +175,14 @@ const Reports = () => {
           </div>
 
           <div className="table-section">
-            <DataTable value={requestsData} className="p-datatable-striped">
-              <Column field="type" header="Request Type"></Column>
+            <DataTable value={usersData} className="p-datatable-striped">
+              <Column field="type" header="Request Statistics"></Column>
               <Column field="count" header="Count"></Column>
             </DataTable>
           </div>
         </div>
       </div>
-      <button id="dlButton" onClick={downloadReport}>
-        Download Report
-      </button>
+      <button id="dlButton" onClick={downloadReport}>Download Report</button>
     </div>
   );
 };
